@@ -18,4 +18,40 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="welcome_check_box">
+        <item name="android:layout_marginStart">@dimen/welcome_checkbox_start_margin</item>
+        <item name="android:layout_marginLeft">@dimen/welcome_checkbox_start_margin</item>
+        <item name="android:layout_marginTop">@dimen/default_margin</item>
+        <item name="android:layout_marginBottom">@dimen/default_margin</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingLeft">@dimen/small_margin</item>
+        <item name="android:paddingStart">@dimen/small_margin</item>
+    </style>
+
+    <style name="text_headline">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline5
+        </item>
+    </style>
+
+    <style name="text_instruction">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline6
+        </item>
+    </style>
+
+    <style name="text_app_name">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline4
+        </item>
+    </style>
+
+    <style name="bottom_action_button" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/default_margin</item>
+        <item name="android:layout_marginRight">@dimen/default_margin</item>
+        <item name="android:layout_marginBottom">@dimen/default_margin</item>
+        <item name="android:paddingTop">@dimen/default_margin</item>
+        <item name="android:paddingBottom">@dimen/default_margin</item>
+    </style>
+
 </resources>

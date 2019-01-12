@@ -8,63 +8,93 @@
     tools:context=".WelcomeActivity"
     tools:showIn="@layout/activity_welcome">
 
-    <android.support.v7.widget.AppCompatTextView
+    <TextView
         android:id="@+id/welcome_text_gur_fateh"
+        style="@style/text_headline"
         android:layout_width="wrap_content"
-        android:layout_height="103dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/double_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
         android:text="@string/welcome_gur_fateh"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.458"
+        app:layout_constraintBottom_toTopOf="@+id/welcome_text_inst_1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.163" />
+        app:layout_constraintVertical_chainStyle="packed" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <TextView
         android:id="@+id/welcome_text_inst_1"
+        style="@style/text_instruction"
         android:layout_width="wrap_content"
-        android:layout_height="104dp"
-        android:text="@string/welcome_gur_fateh"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.458"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:text="@string/welcome_inst_to_activate"
+        app:layout_constraintBottom_toTopOf="@+id/welcome_text_app_name"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_text_gur_fateh"
-        app:layout_constraintVertical_bias="0.225" />
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text_gur_fateh" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <TextView
         android:id="@+id/welcome_text_app_name"
+        style="@style/text_app_name"
         android:layout_width="wrap_content"
-        android:layout_height="104dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:background="@drawable/rounded_rect_background"
+        android:padding="@dimen/double_margin"
         android:text="@string/app_name"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/welcome_text_inst_2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text_inst_1" />
+
+    <TextView
+        android:id="@+id/welcome_text_inst_2"
+        style="@style/text_instruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:text="@string/welcome_inst_needs_permission"
+        app:layout_constraintBottom_toTopOf="@+id/welcome_checkbox_location_permission"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text_app_name" />
+
+    <CheckBox
+        android:id="@+id/welcome_checkbox_location_permission"
+        style="@style/welcome_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome_text_location_permission"
+        app:layout_constraintBottom_toTopOf="@+id/welcome_checkbox_notification_permission"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text_inst_2" />
+
+    <CheckBox
+        android:id="@+id/welcome_checkbox_notification_permission"
+        style="@style/welcome_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome_text_notification_permission"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcome_checkbox_location_permission" />
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/welcome_text_inst_2"
-        android:layout_width="wrap_content"
-        android:layout_height="104dp"
-        android:text="@string/welcome_gur_fateh"
+    <Button
+        android:id="@+id/welcome_button_permissions"
+        style="@style/bottom_action_button"
+        android:text="@string/welcome_button_text_give_location"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.458"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_text_inst_1"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <android.support.v7.widget.AppCompatCheckBox
-        android:id="@+id/welcome_checkbox_location_permission"
-        android:layout_width="wrap_content"
-        android:layout_height="104dp"
-        android:text="@string/welcome_gur_fateh"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.458"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_text_inst_2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintRight_toRightOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
