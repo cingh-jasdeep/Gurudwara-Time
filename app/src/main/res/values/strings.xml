@@ -4,7 +4,8 @@
     <string name="welcome_gur_fateh">Waheguru Ji Ka Khalsa\nWaheguru Ji Ki Fateh ji</string>
     <string name="welcome_inst_to_activate">To activate auto silent mode</string>
     <string name="welcome_inst_needs_permission">needs permission to access</string>
-    <string name="welcome_text_location_permission">device locaiton\nTo detect Gurudwara location</string>
-    <string name="welcome_text_notification_permission">notification\nTo put phone in Silent mode</string>
-    <string name="welcome_button_text_give_location">1. Give Location Access</string>
+    <string name="welcome_text_location_permission"><big><b>device locaiton</b></big>\nTo detect Gurudwara location</string>
+    <string name="welcome_text_notification_permission"><big><b>notification</b></big>\nTo put phone in Silent mode</string>
+    <string name="welcome_button_text_give_location">1.\tGive Location Access</string>
+    <string name="welcome_button_text_give_notification">2.\tGive Notification Access</string>
 </resources>
