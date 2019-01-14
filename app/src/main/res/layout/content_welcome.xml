@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_welcome">
 
     <TextView
-        android:id="@+id/welcome_text_gur_fateh"
+        android:id="@+id/text_welcome_gur_fateh"
         style="@style/text_headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,15 +17,15 @@
         android:layout_marginTop="@dimen/double_margin"
         android:layout_marginRight="@dimen/default_margin"
         android:layout_marginBottom="@dimen/default_margin"
-        android:text="@string/welcome_gur_fateh"
-        app:layout_constraintBottom_toTopOf="@+id/welcome_text_inst_1"
+        android:text="@string/msg_welcome_gur_fateh"
+        app:layout_constraintBottom_toTopOf="@+id/text_welcome_inst_1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/welcome_text_inst_1"
+        android:id="@+id/text_welcome_inst_1"
         style="@style/text_instruction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,14 +33,14 @@
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
         android:layout_marginBottom="@dimen/default_margin"
-        android:text="@string/welcome_inst_to_activate"
-        app:layout_constraintBottom_toTopOf="@+id/welcome_text_app_name"
+        android:text="@string/msg_welcome_inst_to_activate"
+        app:layout_constraintBottom_toTopOf="@+id/text_welcome_app_name"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_text_gur_fateh" />
+        app:layout_constraintTop_toBottomOf="@+id/text_welcome_gur_fateh" />
 
     <TextView
-        android:id="@+id/welcome_text_app_name"
+        android:id="@+id/text_welcome_app_name"
         style="@style/text_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,13 +49,13 @@
         android:background="@drawable/rounded_rect_background"
         android:padding="@dimen/double_margin"
         android:text="@string/app_name"
-        app:layout_constraintBottom_toTopOf="@+id/welcome_text_inst_2"
+        app:layout_constraintBottom_toTopOf="@+id/text_welcome_inst_2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_text_inst_1" />
+        app:layout_constraintTop_toBottomOf="@+id/text_welcome_inst_1" />
 
     <TextView
-        android:id="@+id/welcome_text_inst_2"
+        android:id="@+id/text_welcome_inst_2"
         style="@style/text_instruction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,35 +63,36 @@
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
         android:layout_marginBottom="@dimen/default_margin"
-        android:text="@string/welcome_inst_needs_permission"
-        app:layout_constraintBottom_toTopOf="@+id/welcome_checkbox_location_permission"
+        android:text="@string/msg_welcome_inst_needs_permission"
+        app:layout_constraintBottom_toTopOf="@+id/checkbox_welcome_location_permission"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_text_app_name" />
+        app:layout_constraintTop_toBottomOf="@+id/text_welcome_app_name" />
 
     <CheckBox
-        android:id="@+id/welcome_checkbox_location_permission"
+        android:id="@+id/checkbox_welcome_location_permission"
         style="@style/welcome_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/welcome_text_location_permission"
-        app:layout_constraintBottom_toTopOf="@+id/welcome_checkbox_notification_permission"
+        android:text="@string/title_welcome_text_location_permission"
+        app:layout_constraintBottom_toTopOf="@+id/checkbox_welcome_notification_permission"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_text_inst_2" />
+        app:layout_constraintTop_toBottomOf="@+id/text_welcome_inst_2" />
 
     <CheckBox
-        android:id="@+id/welcome_checkbox_notification_permission"
+        android:id="@+id/checkbox_welcome_notification_permission"
         style="@style/welcome_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/welcome_text_notification_permission"
+        android:text="@string/title_welcome_text_notification_permission"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_checkbox_location_permission" />
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_welcome_location_permission" />
 
     <Button
-        android:id="@+id/welcome_button_permissions"
+        android:id="@+id/button_welcome_permissions"
         style="@style/bottom_action_button"
-        android:text="@string/welcome_button_text_give_location"
+        android:text="@string/action_welcome_button_text_give_location"
+        android:onClick="onPermissionsButtonClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
