@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--overflow with icons https://stackoverflow.com/a/20318161/10030480-->
+
+    <item
+        android:id="@+id/action_overflow"
+        android:icon="@drawable/ic_action_overflow_white_24dp"
+        android:orderInCategory="100"
+        android:title="@string/action_overflow_menu"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/action_open_include_list"
+                android:icon="@drawable/ic_include_list_white_24dp"
+                android:orderInCategory="200"
+                android:title="@string/action_include"
+                app:showAsAction="always|withText" />
+
+            <item
+                android:id="@+id/action_open_exclude_list"
+                android:icon="@drawable/ic_exclude_list_white_24dp"
+                android:orderInCategory="210"
+                android:title="@string/action_exclude"
+                app:showAsAction="always|withText" />
+        </menu>
+    </item>
+
+</menu>

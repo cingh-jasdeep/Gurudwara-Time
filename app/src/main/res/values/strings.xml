@@ -1,12 +1,43 @@
 <resources>
     <string name="app_name">Gurudwara Time</string>
-    <string name="msg_welcome_gur_fateh">Waheguru Ji Ka Khalsa\nWaheguru Ji Ki Fateh ji</string>
+    <string name="msg_welcome_gur_fateh">Waheguru Ji Ka Khalsa\n
+        Waheguru Ji Ki Fateh ji</string>
+
     <string name="msg_welcome_inst_to_activate">To activate auto silent mode</string>
     <string name="msg_welcome_inst_needs_permission">needs permission to access</string>
-    <string name="title_welcome_text_location_permission"><big><b>device locaiton</b></big>\nTo detect Gurudwara location</string>
-    <string name="title_welcome_text_notification_permission"><big><b>notification</b></big>\nTo put phone in Silent mode</string>
-    <string name="action_welcome_button_text_give_location">1.\tGive Location Access</string>
-    <string name="action_welcome_button_text_give_notification">2.\tGive Notification Access</string>
+    <string name="title_welcome_text_location_permission"><big><b>device locaiton</b></big>
+        \nTo detect Gurudwara location</string>
+
+    <string name="title_welcome_text_notification_permission"><big><b>notification</b></big>
+        \nTo put phone in Silent mode</string>
+
+    <string name="action_welcome_button_text_give_location">
+        1.\tGive Location Access</string>
+
+    <string name="action_welcome_button_text_give_notification">
+        2.\tGive Notification Access</string>
+
     <string name="action_include">Include More Places</string>
     <string name="action_exclude">Exclude List</string>
+    <string name="action_show_nearby_gurudwaras">Show Nearby Gurudwaras</string>
+    <string name="msg_waheguru_ji">Waheguru ji</string>
+
+    <string name="msg_no_location_detected">Phone will be put to\nsilent mode when\n
+        it is in Gurudwara for\napprox 1 minute\n\n<small>Note: Phone will not silent at\nGurudwaras in exclude list</small></string>
+
+    <string name="msg_auto_silent_off">Auto Silent setting is off\n
+        Phone will <u>not</u>\nautomatically silent in\nGurudwara</string>
+
+    <string name="msg_at_location">Phone is put to\nsilent mode at</string>
+
+    <string name="sample_location_name">Sri Bangla Sahib Gurdwara</string>
+    <string name="sample_location_vicinity">Hanuman Road Area, Connaught Place, New Delhi</string>
+    <string name="action_undo_silent">Undo Silent</string>
+    <string name="action_never_silent">Never Silent Here</string>
+    <string name="action_overflow_menu">Menu</string>
+    <string name="sample_gurudwara_text">Sri Bangla Sahib Gurdwara\n<small>Hanuman Road Area,\nConnaught Place, New Delhi</small></string>
+    <string name="title_switch_auto_silent">Auto Silent Mode</string>
+    <string name="action_vibrate">Vibrate</string>
+    <string name="action_setting_silent">Silent</string>
+
 </resources>

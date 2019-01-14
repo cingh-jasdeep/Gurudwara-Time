@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".StatusActivity"
+    tools:showIn="@layout/activity_status">
+
+    <TextView
+        android:id="@+id/text_title_status"
+        style="@style/TextBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:text="@string/msg_waheguru_ji"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/const_layout_status"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginBottom="@dimen/small_margin"
+        android:background="@drawable/background_rect_rounded"
+        app:layout_constraintBottom_toTopOf="@+id/button_show_nearby_status"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_title_status">
+
+        <TextView
+            android:id="@+id/text_silent_mode_status"
+            style="@style/TextBody"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginBottom="16dp"
+            android:text="@string/msg_at_location"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/text_gurudwara_info_at_location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_gurudwara_info_at_location"
+            style="@style/TextBody"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?attr/colorAccent"
+            android:gravity="center"
+            android:paddingLeft="@dimen/small_margin"
+            android:paddingRight="@dimen/small_margin"
+            android:text="@string/sample_gurudwara_text"
+            android:textAlignment="center"
+            android:textColor="?android:textColorPrimaryInverse"
+            app:layout_constraintBottom_toTopOf="@+id/button_never_silent_here"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_silent_mode_status" />
+
+        <Button
+            android:id="@+id/button_undo_silent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:drawableStart="@drawable/ic_action_undo_white_24dp"
+            android:drawableLeft="@drawable/ic_action_undo_white_24dp"
+            android:text="@string/action_undo_silent"
+            app:backgroundTint="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@id/button_never_silent_here"
+            app:layout_constraintEnd_toStartOf="@+id/button_never_silent_here"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/button_never_silent_here" />
+
+        <Button
+            android:id="@+id/button_never_silent_here"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_action_exclude_white_24dp"
+            android:drawableLeft="@drawable/ic_action_exclude_white_24dp"
+            android:text="@string/action_never_silent"
+            app:backgroundTint="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button_undo_silent" />
+
+        <android.support.constraint.Group
+            android:id="@+id/group_at_location_ui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="button_undo_silent,text_gurudwara_info_at_location,button_never_silent_here" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/checkbox_switch_silent_mode"
+        style="@style/TextBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:text="@string/title_switch_auto_silent"
+        app:buttonTint="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintTop_toTopOf="@+id/const_layout_status"
+        app:switchPadding="@dimen/default_margin" />
+
+    <Button
+        android:id="@+id/button_show_nearby_status"
+        style="@style/BottomActionButton"
+        android:onClick="onNearbyButtonClick"
+        android:text="@string/action_show_nearby_gurudwaras"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/action_setting_vibrate"
+        style="@style/SettingsButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/double_margin"
+        android:layout_marginLeft="@dimen/double_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/double_margin"
+        android:layout_marginRight="@dimen/double_margin"
+        android:drawableStart="@drawable/ic_action_setting_vibrate_white_24dp"
+        android:drawableLeft="@drawable/ic_action_setting_vibrate_white_24dp"
+        android:text="@string/action_vibrate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_switch_silent_mode" />
+
+    <Button
+        android:id="@+id/action_setting_silent"
+        style="@style/SettingsButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/double_margin"
+        android:layout_marginLeft="@dimen/double_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/double_margin"
+        android:layout_marginRight="@dimen/double_margin"
+        android:drawableStart="@drawable/ic_action_setting_silent_white_24dp"
+        android:drawableLeft="@drawable/ic_action_setting_silent_white_24dp"
+        android:text="@string/action_setting_silent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/action_setting_vibrate" />
+
+
+</android.support.constraint.ConstraintLayout>
