@@ -26,14 +26,14 @@
         style="@style/WidgetLocationTextBox"
         android:layout_weight="1"
         android:paddingTop="@dimen/small_margin"
-        android:text="@string/sample_location_name"
+        android:text="@string/sample_gurudwara_name"
         android:textAppearance="@style/TextInstruction" />
 
     <TextView
         android:id="@+id/text_location_city_status_widget"
         style="@style/WidgetLocationTextBox"
         android:layout_weight="1"
-        android:text="@string/sample_location_city"
+        android:text="@string/sample_gurudwara_city"
         android:textAppearance="@style/TextBody" />
 
     <Button

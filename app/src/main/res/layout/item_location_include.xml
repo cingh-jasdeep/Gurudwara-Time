@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/small_margin"
-    app:cardCornerRadius="@dimen/radius_corner_rect"
-    app:cardBackgroundColor="?attr/colorAccent">
+    app:cardBackgroundColor="?attr/colorAccent"
+    app:cardCornerRadius="@dimen/radius_corner_rect">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="@string/sample_gurudwara_name"
+            android:text="@string/sample_location_name"
             android:textAppearance="@style/TextBody"
             android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintEnd_toStartOf="@+id/button_map_location_item"
@@ -33,7 +33,7 @@
             android:id="@+id/text_location_vicinity_list_item"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/sample_gurudwara_vicinity"
+            android:text="@string/sample_location_vicinity"
             android:textAppearance="@style/TextBodySmall"
             android:textColor="?android:attr/textColorSecondaryInverse"
             app:layout_constraintEnd_toEndOf="@+id/text_location_name_list_item"

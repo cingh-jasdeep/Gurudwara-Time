@@ -17,8 +17,8 @@
     <string name="action_welcome_button_text_give_notification">
         2.\tGive Notification Access</string>
 
-    <string name="action_include">Include More Places</string>
-    <string name="action_exclude">Exclude List</string>
+    <string name="action_include_list">Include More Places</string>
+    <string name="action_exclude_list">Exclude List</string>
     <string name="action_show_nearby_gurudwaras">Show Nearby Gurudwaras</string>
     <string name="msg_waheguru_ji">Waheguru ji</string>
 
@@ -30,9 +30,13 @@
 
     <string name="msg_at_location">Phone is put to\nsilent mode at</string>
 
-    <string name="sample_location_name">Sri Bangla Sahib Gurdwara</string>
-    <string name="sample_location_vicinity">Hanuman Road Area,\nConnaught Place, New Delhi</string>
-    <string name="sample_location_city">New Delhi</string>
+    <string name="sample_gurudwara_name">Sri Bangla Sahib Gurdwara</string>
+    <string name="sample_gurudwara_vicinity">Hanuman Road Area,\nConnaught Place, New Delhi</string>
+    <string name="sample_gurudwara_city">New Delhi</string>
+
+    <string name="sample_location_name">Purvanchal Heights</string>
+    <string name="sample_location_vicinity">Greater Noida</string>
+    <string name="sample_location_city">Greater Noida</string>
 
     <string name="action_undo_silent">Undo Silent</string>
     <string name="action_never_silent">Never Silent Here</string>
@@ -47,5 +51,9 @@
     <string name="add_widget">Add widget</string>
     <string name="title_auto_silent_off">Auto Silent Off</string>
     <string name="msg_you_are_at">You are at</string>
+    <string name="msg_exclude_list">Exclude Gurudwara locations\nfrom auto silent</string>
+    <string name="action_exclude_location">Exclude</string>
+    <string name="action_clear_exclude_list">Clear List</string>
+    <string name="action_refresh">Refresh</string>
 
 </resources>

@@ -14,14 +14,14 @@
                 android:id="@+id/action_open_include_list"
                 android:icon="@drawable/ic_include_list_white_24dp"
                 android:orderInCategory="200"
-                android:title="@string/action_include"
+                android:title="@string/action_include_list"
                 app:showAsAction="always|withText" />
 
             <item
                 android:id="@+id/action_open_exclude_list"
                 android:icon="@drawable/ic_exclude_list_white_24dp"
                 android:orderInCategory="210"
-                android:title="@string/action_exclude"
+                android:title="@string/action_exclude_list"
                 app:showAsAction="always|withText" />
         </menu>
     </item>
