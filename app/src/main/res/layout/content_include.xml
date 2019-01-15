@@ -7,16 +7,16 @@
     android:layout_marginTop="@dimen/small_margin"
     android:background="?attr/colorPrimary"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ExcludeActivity"
-    tools:showIn="@layout/activity_exclude">
+    tools:context=".IncludeActivity"
+    tools:showIn="@layout/activity_include">
 
     <TextView
-        android:id="@+id/text_subtitle_exclude"
+        android:id="@+id/text_subtitle_include"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/default_margin"
         android:paddingBottom="@dimen/default_margin"
-        android:text="@string/msg_exclude_list"
+        android:text="@string/msg_include_list"
         android:textAlignment="center"
         android:textAppearance="@style/TextInstruction"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,34 +24,34 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button_exclude_location"
+        android:id="@+id/button_include_location"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_action_exclude_white_24dp"
-        android:drawableLeft="@drawable/ic_action_exclude_white_24dp"
-        android:text="@string/action_exclude_location"
+        android:drawableStart="@drawable/ic_action_include_white_24dp"
+        android:drawableLeft="@drawable/ic_action_include_white_24dp"
+        android:text="@string/action_include_location"
         app:backgroundTint="@android:color/black"
-        app:layout_constraintEnd_toStartOf="@+id/button_clear_exclude_list"
+        app:layout_constraintEnd_toStartOf="@+id/button_clear_include_list"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_subtitle_exclude" />
+        app:layout_constraintTop_toBottomOf="@+id/text_subtitle_include" />
 
     <Button
-        android:id="@+id/button_clear_exclude_list"
+        android:id="@+id/button_clear_include_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_action_clear_white_24dp"
         android:drawableLeft="@drawable/ic_action_clear_white_24dp"
         android:text="@string/action_clear_list"
         app:backgroundTint="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/button_exclude_location"
+        app:layout_constraintBottom_toBottomOf="@+id/button_include_location"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button_exclude_location"
-        app:layout_constraintTop_toTopOf="@id/button_exclude_location" />
+        app:layout_constraintStart_toEndOf="@+id/button_include_location"
+        app:layout_constraintTop_toTopOf="@id/button_include_location" />
 
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_exclude_list"
+        android:id="@+id/rv_include_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
@@ -60,8 +60,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_exclude_location"
-        tools:listitem="@layout/item_gurudwara_exclude" />
+        app:layout_constraintTop_toBottomOf="@id/button_include_location"
+        tools:listitem="@layout/item_location_include" />
 
 
 </android.support.constraint.ConstraintLayout>

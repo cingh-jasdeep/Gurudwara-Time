@@ -53,7 +53,10 @@
     <string name="msg_you_are_at">You are at</string>
     <string name="msg_exclude_list">Exclude Gurudwara locations\nfrom auto silent</string>
     <string name="action_exclude_location">Exclude</string>
-    <string name="action_clear_exclude_list">Clear List</string>
+    <string name="action_clear_list">Clear List</string>
     <string name="action_refresh">Refresh</string>
+
+    <string name="msg_include_list">Include more locations\nfor auto silent</string>
+    <string name="action_include_location">Include</string>
 
 </resources>

@@ -43,13 +43,13 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:drawableStart="@drawable/ic_unchecked_white_24dp"
-        android:drawableLeft="@drawable/ic_unchecked_white_24dp"
+        android:drawableEnd="@drawable/ic_unchecked_white_24dp"
+        android:drawableRight="@drawable/ic_unchecked_white_24dp"
         android:drawablePadding="@dimen/default_margin"
         android:text="@string/title_auto_silent_off"
         android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textAppearance="@style/TextInstruction" />
+        android:textAppearance="@style/TextInstruction"
+        android:textColor="@android:color/white" />
 
 
 </LinearLayout>

@@ -36,7 +36,7 @@ public class StatusActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_open_include_list:
-                displayToast(R.string.action_include_list);
+                launchIncludeList();
                 break;
             case R.id.action_open_exclude_list:
                 launchExcludeList();
@@ -51,10 +51,16 @@ public class StatusActivity extends AppCompatActivity {
         startActivity(openNearbyIntent);
     }
 
+    private void launchIncludeList() {
+        Intent intent = new Intent(this, IncludeActivity.class);
+        startActivity(intent);
+    }
+
     private void launchExcludeList() {
         Intent intent = new Intent(this, ExcludeActivity.class);
         startActivity(intent);
     }
+
 
     private void displayToast(int string_res_id) {
         Toast.makeText(this, string_res_id, Toast.LENGTH_SHORT).show();
