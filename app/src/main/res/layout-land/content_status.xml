@@ -8,20 +8,6 @@
     tools:context=".StatusActivity"
     tools:showIn="@layout/activity_status">
 
-    <TextView
-        android:id="@+id/text_title_status"
-        style="@style/TextBody"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
-        android:text="@string/msg_waheguru_ji"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <android.support.constraint.ConstraintLayout
         android:id="@+id/const_layout_status"
         android:layout_width="0dp"
@@ -34,11 +20,10 @@
         app:layout_constraintBottom_toTopOf="@+id/button_show_nearby_status"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_title_status">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/text_silent_mode_status"
-            style="@style/TextBody"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
@@ -49,6 +34,7 @@
             android:layout_marginBottom="16dp"
             android:text="@string/msg_at_location"
             android:textAlignment="center"
+            android:textAppearance="@style/TextBody"
             app:layout_constraintBottom_toTopOf="@+id/text_gurudwara_info_at_location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +42,6 @@
 
         <TextView
             android:id="@+id/text_gurudwara_info_at_location"
-            style="@style/TextBody"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?attr/colorAccent"
@@ -65,6 +50,7 @@
             android:paddingRight="@dimen/small_margin"
             android:text="@string/sample_gurudwara_text"
             android:textAlignment="center"
+            android:textAppearance="@style/TextBody"
             android:textColor="?android:textColorPrimaryInverse"
             app:layout_constraintBottom_toTopOf="@+id/button_never_silent_here"
             app:layout_constraintEnd_toEndOf="parent"
@@ -115,7 +101,6 @@
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/checkbox_switch_silent_mode"
-        style="@style/TextBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin"
@@ -124,6 +109,7 @@
         android:layout_marginEnd="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
         android:text="@string/title_switch_auto_silent"
+        android:textAppearance="@style/TextBody"
         app:buttonTint="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"

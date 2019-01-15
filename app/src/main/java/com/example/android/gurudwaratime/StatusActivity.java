@@ -1,5 +1,6 @@
 package com.example.android.gurudwaratime;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +17,7 @@ public class StatusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_status);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -50,5 +51,7 @@ public class StatusActivity extends AppCompatActivity {
     }
 
     public void onNearbyButtonClick(View view) {
+        Intent openNearbyIntent = new Intent(this, NearbyActivity.class);
+        startActivity(openNearbyIntent);
     }
 }

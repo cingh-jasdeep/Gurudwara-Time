@@ -6,4 +6,6 @@
     <dimen name="small_margin">8dp</dimen>
     <dimen name="welcome_checkbox_start_margin">48dp</dimen>
     <dimen name="double_margin">32dp</dimen>
+    <dimen name="card_elevation_material">1dp</dimen>
+    <dimen name="top_bar_elevation_material">4dp</dimen>
 </resources>

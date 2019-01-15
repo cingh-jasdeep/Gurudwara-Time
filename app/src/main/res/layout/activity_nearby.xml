@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StatusActivity">
+    tools:context=".NearbyActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_status"
+            android:id="@+id/toolbar_nearby"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimaryDark"
@@ -21,7 +21,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView
-                android:id="@+id/text_title_status"
+                android:id="@+id/text_title_nearby"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -33,8 +33,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-
-    <include layout="@layout/content_status" />
+    <include layout="@layout/content_nearby" />
 
 
 </android.support.design.widget.CoordinatorLayout>

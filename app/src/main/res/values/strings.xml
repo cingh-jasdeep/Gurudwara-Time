@@ -31,7 +31,7 @@
     <string name="msg_at_location">Phone is put to\nsilent mode at</string>
 
     <string name="sample_location_name">Sri Bangla Sahib Gurdwara</string>
-    <string name="sample_location_vicinity">Hanuman Road Area, Connaught Place, New Delhi</string>
+    <string name="sample_location_vicinity">Hanuman Road Area,\nConnaught Place, New Delhi</string>
     <string name="action_undo_silent">Undo Silent</string>
     <string name="action_never_silent">Never Silent Here</string>
     <string name="action_overflow_menu">Menu</string>
@@ -39,5 +39,7 @@
     <string name="title_switch_auto_silent">Auto Silent Mode</string>
     <string name="action_vibrate">Vibrate</string>
     <string name="action_setting_silent">Silent</string>
+    <string name="msg_nearby_list">Nearby Gurudwara List</string>
+    <string name="a11y_navigate_location_item">Navigate</string>
 
 </resources>

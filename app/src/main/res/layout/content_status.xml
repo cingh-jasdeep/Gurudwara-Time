@@ -8,34 +8,20 @@
     tools:context=".StatusActivity"
     tools:showIn="@layout/activity_status">
 
-    <TextView
-        android:id="@+id/text_title_status"
-        style="@style/TextHeadline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
-        android:text="@string/msg_waheguru_ji"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <android.support.constraint.ConstraintLayout
         android:id="@+id/const_layout_status"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/default_margin"
-        android:background="@drawable/background_rect_rounded_top"
+        android:layout_marginTop="@dimen/small_margin"
+        android:background="?attr/colorPrimary"
+        app:elevation="@dimen/card_elevation_material"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_title_status">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/text_silent_mode_status"
-            style="@style/TextInstruction"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
@@ -43,9 +29,10 @@
             android:layout_marginTop="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/default_margin"
             android:text="@string/msg_at_location"
             android:textAlignment="center"
+            android:textAppearance="@style/TextInstruction"
             app:layout_constraintBottom_toTopOf="@+id/text_gurudwara_info_at_location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +40,6 @@
 
         <TextView
             android:id="@+id/text_gurudwara_info_at_location"
-            style="@style/TextInstruction"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?attr/colorAccent"
@@ -61,6 +47,7 @@
             android:padding="@dimen/default_margin"
             android:text="@string/sample_gurudwara_text"
             android:textAlignment="center"
+            android:textAppearance="@style/TextInstruction"
             android:textColor="?android:textColorPrimaryInverse"
             app:layout_constraintBottom_toTopOf="@+id/button_never_silent_here"
             app:layout_constraintEnd_toEndOf="parent"
@@ -111,11 +98,11 @@
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/checkbox_switch_silent_mode"
-        style="@style/TextInstruction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/default_margin"
         android:text="@string/title_switch_auto_silent"
+        android:textAppearance="@style/TextInstruction"
         app:buttonTint="@android:color/black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

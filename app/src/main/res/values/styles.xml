@@ -27,24 +27,15 @@
         <item name="android:paddingStart">@dimen/small_margin</item>
     </style>
 
-    <style name="TextBody">
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
-    </style>
+    <style name="TextBody" parent="TextAppearance.MaterialComponents.Body1" />
 
-    <style name="TextHeadline">
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline5
-        </item>
-    </style>
+    <style name="TextBodySmall" parent="TextAppearance.MaterialComponents.Body2" />
 
-    <style name="TextInstruction">
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline6
-        </item>
-    </style>
+    <style name="TextHeadline" parent="TextAppearance.MaterialComponents.Headline5" />
 
-    <style name="TextAppName">
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline4
-        </item>
-    </style>
+    <style name="TextInstruction" parent="TextAppearance.MaterialComponents.Headline6" />
+
+    <style name="TextAppName" parent="TextAppearance.MaterialComponents.Headline4" />
 
     <style name="BottomActionButton" parent="Widget.AppCompat.Button.Colored">
         <item name="android:layout_width">0dp</item>
