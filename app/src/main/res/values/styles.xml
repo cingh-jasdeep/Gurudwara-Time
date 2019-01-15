@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
@@ -55,6 +55,18 @@
         <item name="android:layout_marginRight">@dimen/default_margin</item>
         <item name="android:paddingTop">@dimen/default_margin</item>
         <item name="android:paddingBottom">@dimen/default_margin</item>
+    </style>
+
+    <style name="WidgetTextBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:textAlignment" tools:ignore="NewApi">center</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="WidgetLocationTextBox" parent="WidgetTextBox">
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
 </resources>
