@@ -21,6 +21,8 @@
     <style name="WelcomeCheckBox" parent="TextBody">
         <item name="android:layout_marginStart">@dimen/welcome_checkbox_start_margin</item>
         <item name="android:layout_marginLeft">@dimen/welcome_checkbox_start_margin</item>
+        <item name="android:layout_marginRight">@dimen/default_margin</item>
+        <item name="android:layout_marginEnd">@dimen/default_margin</item>
         <item name="android:layout_marginTop">@dimen/default_margin</item>
         <item name="android:layout_marginBottom">@dimen/default_margin</item>
         <item name="android:paddingLeft">@dimen/small_margin</item>

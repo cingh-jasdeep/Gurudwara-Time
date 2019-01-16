@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WelcomeActivity">
+    android:id="@+id/activity_welcome"
+    tools:context=".welcome.WelcomeActivity">
 
     <include layout="@layout/content_welcome" />
 

@@ -3,14 +3,13 @@ package com.example.android.gurudwaratime;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-public class StatusActivity extends AppCompatActivity {
+public class StatusActivity extends PermissionsCheckActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -5,97 +5,106 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".WelcomeActivity"
+    tools:context=".welcome.WelcomeActivity"
     tools:showIn="@layout/activity_welcome">
 
     <TextView
         android:id="@+id/text_welcome_gur_fateh"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginTop="@dimen/double_margin"
         android:layout_marginRight="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginBottom="8dp"
         android:text="@string/msg_welcome_gur_fateh"
+        android:textAlignment="center"
         android:textAppearance="@style/TextHeadline"
         app:layout_constraintBottom_toTopOf="@+id/text_welcome_inst_1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/text_welcome_inst_1"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
         android:layout_marginBottom="@dimen/default_margin"
         android:text="@string/msg_welcome_inst_to_activate"
+        android:textAlignment="center"
         android:textAppearance="@style/TextInstruction"
         app:layout_constraintBottom_toTopOf="@+id/text_welcome_app_name"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_welcome_gur_fateh" />
 
     <TextView
         android:id="@+id/text_welcome_app_name"
-        style="@style/TextAppName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_margin="@dimen/default_margin"
         android:background="@drawable/background_rect_rounded"
         android:padding="@dimen/double_margin"
         android:text="@string/app_name"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppName"
         app:layout_constraintBottom_toTopOf="@+id/text_welcome_inst_2"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_welcome_inst_1" />
 
     <TextView
         android:id="@+id/text_welcome_inst_2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"
         android:text="@string/msg_welcome_inst_needs_permission"
+        android:textAlignment="center"
         android:textAppearance="@style/TextInstruction"
         app:layout_constraintBottom_toTopOf="@+id/checkbox_welcome_location_permission"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_welcome_app_name" />
 
     <CheckBox
         android:id="@+id/checkbox_welcome_location_permission"
         style="@style/WelcomeCheckBox"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:checked="false"
+        android:onClick="onPermissionsButtonClick"
         android:text="@string/title_welcome_text_location_permission"
-        app:layout_constraintBottom_toTopOf="@+id/checkbox_welcome_notification_permission"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/checkbox_welcome_dnd_permission"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_welcome_inst_2" />
 
     <CheckBox
-        android:id="@+id/checkbox_welcome_notification_permission"
+        android:id="@+id/checkbox_welcome_dnd_permission"
         style="@style/WelcomeCheckBox"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/title_welcome_text_notification_permission"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:checked="false"
+        android:enabled="false"
+        android:onClick="onPermissionsButtonClick"
+        android:text="@string/title_welcome_text_dnd_permission"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkbox_welcome_location_permission" />
 
     <Button
         android:id="@+id/button_welcome_permissions"
         style="@style/BottomActionButton"
         android:onClick="onPermissionsButtonClick"
-        android:text="@string/action_welcome_button_text_give_location"
+        android:text="@string/action_welcome_button_text_give_location_access"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
