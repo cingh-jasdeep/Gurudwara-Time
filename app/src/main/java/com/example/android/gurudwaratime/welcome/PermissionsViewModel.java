@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 
@@ -13,12 +14,10 @@ public class PermissionsViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> mLocationGrantedStatus, mDNDGrantedStatus;
 
-    private final Application mApplication;
 
     public PermissionsViewModel(@NonNull Application application) {
         super(application);
 
-        mApplication = application;
         mLocationGrantedStatus = new MutableLiveData<>();
         mDNDGrantedStatus = new MutableLiveData<>();
 
@@ -57,7 +56,7 @@ public class PermissionsViewModel extends AndroidViewModel {
      * check location permission and save
      */
     void checkLocationPermission() {
-        setLocationPermissionGranted(PermissionsHelper.checkLocationPermission(mApplication));
+        setLocationPermissionGranted(PermissionsHelper.checkLocationPermission(getApplication()));
     }
 
     /**
@@ -65,7 +64,7 @@ public class PermissionsViewModel extends AndroidViewModel {
      */
     void checkDNDPermission() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            setDNDPermissionGranted(PermissionsHelper.checkDNDPermission(mApplication));
+            setDNDPermissionGranted(PermissionsHelper.checkDNDPermission(getApplication()));
         } else {
             setDNDPermissionGranted(true);
         }
@@ -90,5 +89,13 @@ public class PermissionsViewModel extends AndroidViewModel {
                 PermissionsHelper.requestLocationPermission(activity);
             }
         }
+    }
+
+    /**
+     * static method to access checkLocationAndDndPermissions
+     * from PermissionsHelper
+     */
+    public static boolean checkLocationAndDndPermissions(Context context) {
+        return PermissionsHelper.checkLocationAndDndPermissions(context);
     }
 }

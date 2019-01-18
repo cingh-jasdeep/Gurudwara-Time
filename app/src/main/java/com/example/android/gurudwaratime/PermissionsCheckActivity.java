@@ -3,7 +3,8 @@ package com.example.android.gurudwaratime;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.android.gurudwaratime.utilities.PermissionsHelper;
+import com.example.android.gurudwaratime.status.StatusViewModel;
+import com.example.android.gurudwaratime.welcome.PermissionsViewModel;
 import com.example.android.gurudwaratime.welcome.WelcomeActivity;
 
 
@@ -12,7 +13,9 @@ public abstract class PermissionsCheckActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!PermissionsHelper.checkLocationAndDndPermissions(this)) {
+        if (!PermissionsViewModel.checkLocationAndDndPermissions(this)) {
+            //stop location updates
+            StatusViewModel.stopLocationUpdates(getApplicationContext());
             launchWelcomeActivity();
         }
     }

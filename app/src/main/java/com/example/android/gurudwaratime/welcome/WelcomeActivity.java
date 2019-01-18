@@ -19,13 +19,13 @@ import android.widget.Toast;
 
 import com.example.android.gurudwaratime.BuildConfig;
 import com.example.android.gurudwaratime.R;
-import com.example.android.gurudwaratime.StatusActivity;
+import com.example.android.gurudwaratime.status.StatusActivity;
 import com.example.android.gurudwaratime.utilities.PermissionsHelper;
 
 public class WelcomeActivity extends AppCompatActivity {
 
     public static final String EXTRA_NEED_PERMISSIONS = BuildConfig.APPLICATION_ID +
-            ".EXTRA.need-permissions";
+            ".EXTRA_NEED_PERMISSIONS";
     private static final String TAG = WelcomeActivity.class.getSimpleName();
     Button mPermissionsButton;
     CheckBox mLocationCheckBox, mDNDCheckbox;
@@ -35,7 +35,7 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (PermissionsHelper.checkLocationAndDndPermissions(this)) {
+        if (PermissionsViewModel.checkLocationAndDndPermissions(this)) {
             launchStatusScreen(true);
         }
 
@@ -137,7 +137,7 @@ public class WelcomeActivity extends AppCompatActivity {
      * Request appropriate permissions from viewmodel (first location, then dnd(if needed)
      */
     public void onPermissionsButtonClick(View view) {
-        if(view instanceof CheckBox) {
+        if (view instanceof CheckBox) {
             //reset check on click
             ((CheckBox) view).setChecked(false);
         }
