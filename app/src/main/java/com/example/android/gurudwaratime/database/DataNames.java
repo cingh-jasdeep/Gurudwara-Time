@@ -25,6 +25,10 @@ public class DataNames {
     public static final String COLUMN_CACHED_PLACE_LONG = "cached_place_long";
     public static final String COLUMN_CACHED_PLACE_LAT = "cached_place_lat";
     public static final String COLUMN_CACHED_PLACE_NAME = "cached_place_name";
+    public static final String COLUMN_CACHED_PLACE_VICINITY = "cached_place_vicinity";
+    public static final String COLUMN_CACHED_PLACE_GEOFENCE_RADIUS
+            = "cached_place_geofence_radius"; //radius is in meters
+
 
     public static final String COLUMN_UPDATED_AT = "updated_at";
 

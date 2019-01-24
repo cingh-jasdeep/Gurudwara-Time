@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.example.android.gurudwaratime.BuildConfig;
 import com.example.android.gurudwaratime.R;
 import com.example.android.gurudwaratime.status.StatusActivity;
-import com.example.android.gurudwaratime.utilities.PermissionsHelper;
 
 public class WelcomeActivity extends AppCompatActivity {
 

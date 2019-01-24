@@ -8,8 +8,6 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 
-import com.example.android.gurudwaratime.utilities.PermissionsHelper;
-
 public class PermissionsViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> mLocationGrantedStatus, mDNDGrantedStatus;
@@ -24,6 +22,14 @@ public class PermissionsViewModel extends AndroidViewModel {
         checkLocationPermission();
         checkDNDPermission();
 
+    }
+
+    /**
+     * static method to access checkLocationAndDndPermissions
+     * from PermissionsHelper
+     */
+    public static boolean checkLocationAndDndPermissions(Context context) {
+        return PermissionsHelper.checkLocationAndDndPermissions(context);
     }
 
     MutableLiveData<Boolean> getLocationGrantedStatus() {
@@ -89,13 +95,5 @@ public class PermissionsViewModel extends AndroidViewModel {
                 PermissionsHelper.requestLocationPermission(activity);
             }
         }
-    }
-
-    /**
-     * static method to access checkLocationAndDndPermissions
-     * from PermissionsHelper
-     */
-    public static boolean checkLocationAndDndPermissions(Context context) {
-        return PermissionsHelper.checkLocationAndDndPermissions(context);
     }
 }

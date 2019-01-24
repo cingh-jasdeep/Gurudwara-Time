@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:enabled="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        android:usesCleartextTraffic="true"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning"
+        tools:targetApi="m">
         <activity
             android:name=".welcome.WelcomeActivity"
             android:label="@string/app_name"
@@ -53,7 +56,7 @@
                 android:resource="@xml/status_widget_provider_info" />
         </receiver>
         <receiver
-            android:name=".utilities.location.LocationUpdatesBroadcastReceiver"
+            android:name=".location_updates.LocationUpdatesBroadcastReceiver"
             android:enabled="true"
             tools:targetApi="n">
             <intent-filter>
@@ -81,6 +84,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.gurudwaratime.status.StatusActivity" />
         </activity>
+
+        <service
+            android:name=".sync.UpdateNearbyGurudwarasJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

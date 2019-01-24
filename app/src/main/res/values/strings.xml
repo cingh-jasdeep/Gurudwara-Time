@@ -65,6 +65,7 @@
     <string name="msg_permissions_granted">All permissions granted.</string>
     <string name="location_notification_channel">Location Updates</string>
     <string name="unknown_location">Unknown Location</string>
+    <string name="msg_synced_nearby_gurudwaras">Nearby Gurudwaras saved</string>
 
     <plurals name="num_locations_reported">
         <item quantity="zero">No location reported</item>

@@ -24,6 +24,9 @@ import com.example.android.gurudwaratime.NearbyActivity;
 import com.example.android.gurudwaratime.PermissionsCheckActivity;
 import com.example.android.gurudwaratime.R;
 
+import static com.example.android.gurudwaratime.data.Constants.KEY_AUTO_SILENT_STATUS;
+import static com.example.android.gurudwaratime.data.Constants.KEY_LAST_SYNC_LOCATION_JSON;
+
 public class StatusActivity extends PermissionsCheckActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private StatusViewModel mViewModel;
@@ -90,9 +93,13 @@ public class StatusActivity extends PermissionsCheckActivity implements SharedPr
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
-            case StatusViewModel.KEY_AUTO_SILENT_STATUS:
+            case KEY_AUTO_SILENT_STATUS:
                 if (mViewModel == null) connectViewModel();
                 mViewModel.onAutoSilentStatusChanged();
+            case KEY_LAST_SYNC_LOCATION_JSON:
+                if (StatusViewModel.getLastSyncLocation(getApplicationContext()) != null) {
+                    mSilentModeStatusText.setText(R.string.msg_no_location_detected);
+                }
         }
     }
 
@@ -127,7 +134,7 @@ public class StatusActivity extends PermissionsCheckActivity implements SharedPr
             //if auto silent turned on
             updateStatusText(true);
             //start location updates
-            StatusViewModel.startLocationUpdates(getApplicationContext());
+            StatusViewModel.startLocationUpdates(getApplicationContext(), false);
 
         } else {
             //if auto silent turned off

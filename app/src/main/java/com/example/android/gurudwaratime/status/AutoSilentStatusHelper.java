@@ -1,7 +1,9 @@
-package com.example.android.gurudwaratime.utilities;
+package com.example.android.gurudwaratime.status;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
+
+import static com.example.android.gurudwaratime.data.Constants.KEY_AUTO_SILENT_STATUS;
 
 /**
  * Helper class
@@ -9,8 +11,6 @@ import android.preference.PreferenceManager;
  * source: https://github.com/googlecodelabs/background-location-updates-android-o
  */
 public class AutoSilentStatusHelper {
-
-    public final static String KEY_AUTO_SILENT_STATUS = "auto-silent-status";
 
     public static void setStatus(Context context, boolean value) {
         PreferenceManager.getDefaultSharedPreferences(context)
@@ -20,7 +20,7 @@ public class AutoSilentStatusHelper {
     }
 
     public static boolean getStatus(Context context) {
-        //by default we start by requesting location updates on first app launch
+        //by default we start by enabling auto silent on first app launch
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(KEY_AUTO_SILENT_STATUS, true);
     }

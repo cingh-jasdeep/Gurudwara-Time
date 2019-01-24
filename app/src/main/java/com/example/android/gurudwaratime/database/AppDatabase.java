@@ -5,24 +5,24 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-@Database(entities = {PlacesDbEntity.class}, version = 1)
+@Database(entities = {PlaceDbEntity.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
-    public abstract PlacesDbDao placesDao();
-
-    private static AppDatabase INSTANCE;
+    private static AppDatabase sInstance;
 
     public static AppDatabase getDatabase(final Context context) {
-        if (INSTANCE == null) {
+        if (sInstance == null) {
             synchronized (AppDatabase.class) {
-                if (INSTANCE == null) {
+                if (sInstance == null) {
                     // Create database here
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                    sInstance = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, DataNames.DATABASE_NAME)
                             .fallbackToDestructiveMigration()
                             .build();
                 }
             }
         }
-        return INSTANCE;
+        return sInstance;
     }
+
+    public abstract PlacesDbDao placesDao();
 }

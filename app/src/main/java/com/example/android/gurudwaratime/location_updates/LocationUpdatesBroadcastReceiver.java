@@ -1,4 +1,4 @@
-package com.example.android.gurudwaratime.utilities.location;
+package com.example.android.gurudwaratime.location_updates;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,17 +8,15 @@ import android.util.Log;
 
 import com.example.android.gurudwaratime.BuildConfig;
 import com.example.android.gurudwaratime.status.StatusViewModel;
+import com.example.android.gurudwaratime.sync.GurudwaraTimeSyncTasks;
 import com.example.android.gurudwaratime.welcome.PermissionsViewModel;
 import com.google.android.gms.location.LocationResult;
 
-import java.util.List;
-
 public class LocationUpdatesBroadcastReceiver extends BroadcastReceiver {
-
-    private static final String TAG = LocationUpdatesBroadcastReceiver.class.getSimpleName();
 
     public static final String ACTION_PROCESS_UPDATES = BuildConfig.APPLICATION_ID +
             ".ACTION_PROCESS_UPDATES";
+    private static final String TAG = LocationUpdatesBroadcastReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -28,14 +26,17 @@ public class LocationUpdatesBroadcastReceiver extends BroadcastReceiver {
                 case ACTION_PROCESS_UPDATES:
                     LocationResult result = LocationResult.extractResult(intent);
                     if (result != null) {
-                        List<Location> locations = result.getLocations();
-                        LocationResultHelper locationResultHelper = new LocationResultHelper(
-                                context, locations);
-                        // Save the location data to SharedPreferences.
-                        locationResultHelper.saveResults();
-                        // Show notification with the location data.
-                        locationResultHelper.showNotification();
-                        Log.i(TAG, LocationResultHelper.getSavedLocationResult(context));
+                        Location newLocation = result.getLastLocation();
+                        if (newLocation != null) {
+                            if (GurudwaraTimeSyncTasks.scheduleNearbySyncImmediately(
+                                    context,
+                                    newLocation)) {
+                                Log.i(TAG, "onReceive: scheduled nearby sync successfully \n" +
+                                        newLocation);
+                            } else {
+                                Log.i(TAG, "onReceive: could not schedule nearby sync!");
+                            }
+                        }
                     }
                     break;
                 case Intent.ACTION_BOOT_COMPLETED:
@@ -48,9 +49,9 @@ public class LocationUpdatesBroadcastReceiver extends BroadcastReceiver {
         //if permissions are available and auto silent is enabled
         // then restart location updates on reboot
         if (PermissionsViewModel.checkLocationAndDndPermissions(context)
-                && StatusViewModel.getAutoSilentStatusStatic(context)) {
+                && StatusViewModel.getAutoSilentStatus(context)) {
             Log.i(TAG, "onReceive: Starting location updates on reboot");
-            StatusViewModel.startLocationUpdates(context);
+            StatusViewModel.startLocationUpdates(context, true);
         }
     }
 }

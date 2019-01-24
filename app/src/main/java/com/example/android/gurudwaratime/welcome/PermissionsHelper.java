@@ -1,4 +1,4 @@
-package com.example.android.gurudwaratime.utilities;
+package com.example.android.gurudwaratime.welcome;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,18 +10,13 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.example.android.gurudwaratime.R;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class PermissionsHelper {
 
-    private static final String TAG = PermissionsHelper.class.getSimpleName();
     public static final int REQUEST_LOCATION_PERMISSIONS_REQUEST_CODE = 106;
-
-
+    private static final String TAG = PermissionsHelper.class.getSimpleName();
 
     /**
      * Return the current state of the location permission.

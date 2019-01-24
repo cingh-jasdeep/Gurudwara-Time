@@ -41,7 +41,12 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:$play_services_version"
     implementation "com.google.android.gms:play-services-places:$play_services_version"
 
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
+
     implementation "com.firebase:firebase-jobdispatcher:0.8.5"
+
+    implementation 'com.google.maps:google-maps-services:0.9.1'
+    implementation 'org.slf4j:slf4j-simple:1.7.25'
 
     def retrofit_version = "2.5.0"
 
