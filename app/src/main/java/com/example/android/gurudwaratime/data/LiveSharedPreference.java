@@ -35,15 +35,20 @@ public class LiveSharedPreference<T> extends MutableLiveData<T> {
     }
 
     private void updateLivePrefValue(SharedPreferences sharedPreferences, String key) {
-        final T value = (T) sharedPreferences.getAll().get(key);
-        setValue(value);
+        if (sharedPreferences.getAll().get(key) == null) {
+            setValue(null);
+        } else {
+            final T value = (T) sharedPreferences.getAll().get(key);
+            setValue(value);
+        }
+
     }
 
     @Override
     protected void onActive() {
         super.onActive();
-        updateLivePrefValue(mSharedPreferences, mPreferenceKey);
         mSharedPreferences.registerOnSharedPreferenceChangeListener(mListener);
+        updateLivePrefValue(mSharedPreferences, mPreferenceKey);
     }
 
     @Override
