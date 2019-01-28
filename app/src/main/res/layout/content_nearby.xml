@@ -7,7 +7,7 @@
     android:layout_marginTop="@dimen/small_margin"
     android:background="?attr/colorPrimary"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".NearbyActivity"
+    tools:context=".ui.nearby.NearbyActivity"
     tools:showIn="@layout/activity_nearby">
 
     <TextView

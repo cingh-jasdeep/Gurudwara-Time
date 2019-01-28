@@ -7,9 +7,9 @@ import android.location.Location;
 import android.util.Log;
 
 import com.example.android.gurudwaratime.BuildConfig;
-import com.example.android.gurudwaratime.status.StatusViewModel;
+import com.example.android.gurudwaratime.ui.status.StatusViewModel;
 import com.example.android.gurudwaratime.sync.GurudwaraTimeSyncTasks;
-import com.example.android.gurudwaratime.welcome.PermissionsViewModel;
+import com.example.android.gurudwaratime.ui.welcome.PermissionsViewModel;
 import com.google.android.gms.location.LocationResult;
 
 public class LocationUpdatesBroadcastReceiver extends BroadcastReceiver {
@@ -49,7 +49,7 @@ public class LocationUpdatesBroadcastReceiver extends BroadcastReceiver {
         //if permissions are available and auto silent is enabled
         // then restart location updates on reboot
         if (PermissionsViewModel.checkLocationAndDndPermissions(context)
-                && StatusViewModel.getAutoSilentStatus(context)) {
+                && StatusViewModel.getAutoSilentRequestedStatus(context)) {
             Log.i(TAG, "onReceive: Starting location updates on reboot");
             StatusViewModel.startLocationUpdates(context, true);
         }

@@ -5,7 +5,7 @@
     android:id="@+id/activity_status"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".status.StatusActivity">
+    tools:context=".ui.status.StatusActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

@@ -1,17 +1,16 @@
-package com.example.android.gurudwaratime.status;
+package com.example.android.gurudwaratime.ui.status;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.Group;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,15 +19,13 @@ import android.widget.Toast;
 
 import com.example.android.gurudwaratime.ExcludeActivity;
 import com.example.android.gurudwaratime.IncludeActivity;
-import com.example.android.gurudwaratime.NearbyActivity;
 import com.example.android.gurudwaratime.PermissionsCheckActivity;
 import com.example.android.gurudwaratime.R;
+import com.example.android.gurudwaratime.ui.nearby.NearbyActivity;
 
-import static com.example.android.gurudwaratime.data.Constants.KEY_AUTO_SILENT_STATUS;
-import static com.example.android.gurudwaratime.data.Constants.KEY_LAST_SYNC_LOCATION_JSON;
+public class StatusActivity extends PermissionsCheckActivity {
 
-public class StatusActivity extends PermissionsCheckActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
-
+    private static final String TAG = StatusActivity.class.getSimpleName();
     private StatusViewModel mViewModel;
     private SwitchCompat mAutoSilentSwitch;
     private TextView mSilentModeStatusText;
@@ -47,26 +44,17 @@ public class StatusActivity extends PermissionsCheckActivity implements SharedPr
 
         connectViewModel();
 
-        //register shared preference listener
-        PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                .registerOnSharedPreferenceChangeListener(this);
+        mViewModel.getAutoSilentRequestedStatus().observe(this,
+                new Observer<AutoSilentStatusStates>() {
+                    @Override
+                    public void onChanged(@Nullable AutoSilentStatusStates autoSilentStatusStates) {
+                        if (autoSilentStatusStates != null) {
+                            Log.i(TAG, "onChanged: " + autoSilentStatusStates);
+                            handleAutoSilentStatusChanged(autoSilentStatusStates);
+                        }
+                    }
+                });
 
-        mViewModel.getAutoSilentStatus().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean autoSilentStatus) {
-                if (autoSilentStatus != null) {
-                    handleAutoSilentStatusChanged(autoSilentStatus);
-                }
-            }
-        });
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                .unregisterOnSharedPreferenceChangeListener(this);
-        super.onDestroy();
     }
 
     @Override
@@ -89,20 +77,6 @@ public class StatusActivity extends PermissionsCheckActivity implements SharedPr
         return super.onOptionsItemSelected(item);
     }
 
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        switch (key) {
-            case KEY_AUTO_SILENT_STATUS:
-                if (mViewModel == null) connectViewModel();
-                mViewModel.onAutoSilentStatusChanged();
-            case KEY_LAST_SYNC_LOCATION_JSON:
-                if (StatusViewModel.getLastSyncLocation(getApplicationContext()) != null) {
-                    mSilentModeStatusText.setText(R.string.msg_no_location_detected);
-                }
-        }
-    }
-
     private void connectViewModel() {
         mViewModel = ViewModelProviders.of(this).get(StatusViewModel.class);
     }
@@ -117,33 +91,45 @@ public class StatusActivity extends PermissionsCheckActivity implements SharedPr
 
     public void onAutoSilentSwitchClick(View view) {
         if (view instanceof SwitchCompat) {
-            boolean requestedAutoSilentStatus = ((SwitchCompat) view).isChecked();
+            SwitchCompat switchView = ((SwitchCompat) view);
+            boolean requestedAutoSilentStatus = switchView.isChecked();
+
+            //reset checkbox
+            switchView.setChecked(!switchView.isChecked());
+
             if (mViewModel == null) connectViewModel();
-            mViewModel.updateAutoSilentStatus(requestedAutoSilentStatus);
+            mViewModel.updateAutoSilentRequestedStatus(requestedAutoSilentStatus);
         }
 
     }
 
-    private void handleAutoSilentStatusChanged(@NonNull Boolean autoSilentStatus) {
-        //update switch ui
-        if (mAutoSilentSwitch.isChecked() != autoSilentStatus) {
-            mAutoSilentSwitch.setChecked(autoSilentStatus);
-        }
+    private void handleAutoSilentStatusChanged(@NonNull AutoSilentStatusStates autoSilentStatus) {
+        int stringRes;
 
-        if (autoSilentStatus) {
-            //if auto silent turned on
-            updateStatusText(true);
-            //start location updates
-            StatusViewModel.startLocationUpdates(getApplicationContext(), false);
+        switch (autoSilentStatus) {
+            case INIT:
+                mAutoSilentSwitch.setChecked(true);
+                mAtLocationUiGroup.setVisibility(View.GONE);
+                mSilentModeStatusText.setText(R.string.msg_auto_silent_init);
 
-        } else {
-            //if auto silent turned off
-            updateStatusText(false);
-            //hide at location ui
-            mAtLocationUiGroup.setVisibility(View.GONE);//todo could animate
-            //stop location updates
-            StatusViewModel.stopLocationUpdates(getApplicationContext());
-            //todo remove geofences
+                break;
+            case NO_LOCATION:
+                mAtLocationUiGroup.setVisibility(View.GONE);
+                mSilentModeStatusText.setText(R.string.msg_no_location_detected);
+
+                break;
+            case AT_LOCATION:
+                mAtLocationUiGroup.setVisibility(View.VISIBLE);
+                mSilentModeStatusText.setText(R.string.msg_at_location);
+                //todo get current location data
+
+                break;
+            case TURNED_OFF:
+                mAutoSilentSwitch.setChecked(false);
+                mAtLocationUiGroup.setVisibility(View.GONE);
+                mSilentModeStatusText.setText(R.string.msg_auto_silent_off);
+
+                break;
         }
     }
 

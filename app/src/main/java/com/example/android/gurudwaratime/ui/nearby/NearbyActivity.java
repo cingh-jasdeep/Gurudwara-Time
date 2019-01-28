@@ -1,4 +1,4 @@
-package com.example.android.gurudwaratime;
+package com.example.android.gurudwaratime.ui.nearby;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -6,6 +6,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.example.android.gurudwaratime.PermissionsCheckActivity;
+import com.example.android.gurudwaratime.R;
 
 public class NearbyActivity extends PermissionsCheckActivity {
 

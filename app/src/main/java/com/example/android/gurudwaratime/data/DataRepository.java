@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 
-import com.example.android.gurudwaratime.MainApplication;
 import com.example.android.gurudwaratime.database.AppDatabase;
 import com.example.android.gurudwaratime.database.PlaceDbEntity;
 import com.example.android.gurudwaratime.database.PlacesDbDao;
@@ -40,10 +39,17 @@ public class DataRepository {
 
     private static DataRepository sInstance;
 
+    private final GeoApiContext mGeoApiContext;
+
     private final PlacesDbDao mPlacesDbDao;
+
 
     private DataRepository(AppDatabase db) {
         mPlacesDbDao = db.placesDao();
+
+        mGeoApiContext = new GeoApiContext.Builder()
+                .apiKey(Constants.KEY_QUERY_DEFAULT_VALUE_PLACES_API)
+                .build();
     }
 
     /**
@@ -57,8 +63,10 @@ public class DataRepository {
         Log.d(TAG, "Getting the repository");
         if (sInstance == null) {
             synchronized (DataRepository.class) {
-                sInstance = new DataRepository(db);
-                Log.d(TAG, "Made new repository");
+                if (sInstance == null) {
+                    sInstance = new DataRepository(db);
+                    Log.d(TAG, "Made new repository");
+                }
             }
         }
         return sInstance;
@@ -124,92 +132,85 @@ public class DataRepository {
         Log.i(TAG, "fetchAndSaveNearbyGurudwarasSync: fetching nearby Gurudwaras " +
                 "using places api in the repository");
 
-        GeoApiContext geoApiContext =
-                ((MainApplication) (context.getApplicationContext())).getGeoApiContext();
+        com.google.maps.model.LatLng currLatLng =
+                new com.google.maps.model.LatLng(location.getLatitude(),
+                        location.getLongitude());
 
-        if (geoApiContext != null) {
-            com.google.maps.model.LatLng currLatLng =
-                    new com.google.maps.model.LatLng(location.getLatitude(),
-                            location.getLongitude());
+        NearbySearchRequest nearbySearchRequest =
+                PlacesApi.nearbySearchQuery(getGeoApiContext(),
+                        currLatLng);
+        int pageCount = 0;
+        try {
+            PlacesSearchResponse searchResponse =
+                    nearbySearchRequest
+                            .type(PlaceType.PLACE_OF_WORSHIP)
+                            .keyword(KEYWORD_QUERY_DEFAULT_VALUE_PLACES_API)
+                            .rankby(RankBy.DISTANCE).await();
 
-            NearbySearchRequest nearbySearchRequest =
-                    PlacesApi.nearbySearchQuery(geoApiContext,
-                            currLatLng);
-            int pageCount = 0;
-            try {
-                PlacesSearchResponse searchResponse =
-                        nearbySearchRequest
-                                .type(PlaceType.PLACE_OF_WORSHIP)
-                                .keyword(KEYWORD_QUERY_DEFAULT_VALUE_PLACES_API)
-                                .rankby(RankBy.DISTANCE).await();
+            processPlacesSearchResponse(searchResponse, true, pageCount);
 
-                processPlacesSearchResponse(searchResponse, true, pageCount);
+            String nextPageToken = searchResponse.nextPageToken;
+            int failedCount = 0;
 
-                String nextPageToken = searchResponse.nextPageToken;
-                int failedCount = 0;
+            while (nextPageToken != null
+                    && !nextPageToken.equals("")) {
 
-                while (nextPageToken != null
-                        && !nextPageToken.equals("")) {
+                Thread.sleep(PLACES_API_NEXT_PAGE_SLEEP_INTERVAL_MILLIS);
 
-                    Thread.sleep(PLACES_API_NEXT_PAGE_SLEEP_INTERVAL_MILLIS);
+                nearbySearchRequest =
+                        PlacesApi.nearbySearchQuery(getGeoApiContext(),
+                                currLatLng);
+                try {
+                    searchResponse =
+                            nearbySearchRequest
+                                    .pageToken(nextPageToken)
+                                    .await();
 
-                    nearbySearchRequest =
-                            PlacesApi.nearbySearchQuery(geoApiContext,
-                                    currLatLng);
-                    try {
-                        searchResponse =
-                                nearbySearchRequest
-                                        .pageToken(nextPageToken)
-                                        .await();
-
-                    } catch (ApiException e) {
-                        Log.e(TAG, "fetchAndSaveNearbyGurudwarasSync: ", e);
-                        failedCount++;
-                        if (failedCount > 3) {
-                            return false;
-                        } else {
-                            continue;
-                        }
-                    } catch (InterruptedException e) {
-                        Log.e(TAG, "fetchAndSaveNearbyGurudwarasSync: ", e);
-                        failedCount++;
-                        if (failedCount > 3) {
-                            return false;
-                        } else {
-                            continue;
-                        }
-                    } catch (IOException e) {
-                        Log.e(TAG, "fetchAndSaveNearbyGurudwarasSync: ", e);
-                        failedCount++;
-                        if (failedCount > 3) {
-                            return false;
-                        } else {
-                            continue;
-                        }
+                } catch (ApiException e) {
+                    Log.e(TAG, "fetchAndSaveNearbyGurudwarasSync: ", e);
+                    failedCount++;
+                    if (failedCount > 3) {
+                        return false;
+                    } else {
+                        continue;
                     }
-
-                    pageCount++;
-                    processPlacesSearchResponse(searchResponse, false, pageCount);
-
-                    nextPageToken = searchResponse.nextPageToken;
+                } catch (InterruptedException e) {
+                    Log.e(TAG, "fetchAndSaveNearbyGurudwarasSync: ", e);
+                    failedCount++;
+                    if (failedCount > 3) {
+                        return false;
+                    } else {
+                        continue;
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "fetchAndSaveNearbyGurudwarasSync: ", e);
+                    failedCount++;
+                    if (failedCount > 3) {
+                        return false;
+                    } else {
+                        continue;
+                    }
                 }
 
-                return true;
+                pageCount++;
+                processPlacesSearchResponse(searchResponse, false, pageCount);
 
-            } catch (ApiException e) {
-                Log.e(TAG, "fetchAndSaveNearbyGurudwarasSync: ", e);
-                return false;
-            } catch (InterruptedException e) {
-                Log.e(TAG, "fetchAndSaveNearbyGurudwarasSync: ", e);
-                return false;
-            } catch (IOException e) {
-                Log.e(TAG, "fetchAndSaveNearbyGurudwarasSync: ", e);
-                return false;
+                nextPageToken = searchResponse.nextPageToken;
             }
 
+            return true;
+
+        } catch (ApiException e) {
+            Log.e(TAG, "fetchAndSaveNearbyGurudwarasSync: ", e);
+            return false;
+        } catch (InterruptedException e) {
+            Log.e(TAG, "fetchAndSaveNearbyGurudwarasSync: ", e);
+            return false;
+        } catch (IOException e) {
+            Log.e(TAG, "fetchAndSaveNearbyGurudwarasSync: ", e);
+            return false;
         }
 
-        return false;
     }
 
     private void processPlacesSearchResponse(PlacesSearchResponse searchResponse,
@@ -421,5 +422,9 @@ public class DataRepository {
             }
         }
         return INVALID_INDEX;
+    }
+
+    public GeoApiContext getGeoApiContext() {
+        return mGeoApiContext;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.android.gurudwaratime.welcome;
+package com.example.android.gurudwaratime.ui.welcome;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.example.android.gurudwaratime.BuildConfig;
 import com.example.android.gurudwaratime.R;
-import com.example.android.gurudwaratime.status.StatusActivity;
+import com.example.android.gurudwaratime.ui.status.StatusActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
 

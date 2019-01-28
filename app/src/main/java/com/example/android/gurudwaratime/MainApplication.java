@@ -8,9 +8,6 @@ import com.google.maps.GeoApiContext;
 
 public class MainApplication extends Application {
 
-
-    private GeoApiContext mGeoApiContext;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -18,14 +15,6 @@ public class MainApplication extends Application {
         //debugging with stetho
         Stetho.initializeWithDefaults(this);
 
-        mGeoApiContext = new GeoApiContext.Builder()
-                .apiKey(Constants.KEY_QUERY_DEFAULT_VALUE_PLACES_API)
-                .build();
-
-    }
-
-    public GeoApiContext getGeoApiContext() {
-        return mGeoApiContext;
     }
 }
 

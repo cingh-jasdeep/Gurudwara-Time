@@ -1,4 +1,4 @@
-package com.example.android.gurudwaratime.welcome;
+package com.example.android.gurudwaratime.ui.welcome;
 
 import android.Manifest;
 import android.app.Activity;

@@ -16,7 +16,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.example.android.gurudwaratime.R;
-import com.example.android.gurudwaratime.status.StatusActivity;
+import com.example.android.gurudwaratime.ui.status.StatusActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

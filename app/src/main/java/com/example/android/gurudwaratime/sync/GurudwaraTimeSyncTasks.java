@@ -78,6 +78,8 @@ public class GurudwaraTimeSyncTasks {
 
                 Log.i(TAG, "performNearbySync: successfully synced\n" +
                         LocationResultHelper.getLastSyncLocation(context));
+            } else {
+                return false;
             }
         }
 
