@@ -10,6 +10,7 @@ import android.util.Log;
 import com.example.android.gurudwaratime.data.DataRepository;
 import com.example.android.gurudwaratime.database.AppDatabase;
 import com.example.android.gurudwaratime.location_updates.LocationResultHelper;
+import com.example.android.gurudwaratime.ui.status.StatusViewModel;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -63,7 +64,7 @@ public class GurudwaraTimeSyncTasks {
                 || forceSync) {
 
             //fetch nearby Gurudwaras and sync with db
-            DataRepository repo = DataRepository.getInstance(AppDatabase.getDatabase(context));
+            DataRepository repo = DataRepository.getInstance(context.getApplicationContext());
 
             if (repo.fetchAndSaveNearbyGurudwarasSync(locationResultHelper.getLocation(),
                     context)) {
@@ -77,7 +78,7 @@ public class GurudwaraTimeSyncTasks {
                 locationResultHelper.showNotification();
 
                 Log.i(TAG, "performNearbySync: successfully synced\n" +
-                        LocationResultHelper.getLastSyncLocation(context));
+                        repo.getLastSyncLocation(context));
             } else {
                 return false;
             }

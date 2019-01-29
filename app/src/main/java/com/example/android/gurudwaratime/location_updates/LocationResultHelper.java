@@ -22,9 +22,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.example.android.gurudwaratime.data.Constants.KEY_LAST_SYNC_LOCATION_JSON;
+import static com.example.android.gurudwaratime.data.Constants.KEY_LAST_SYNC_TIME_IN_MILLIS;
 import static com.example.android.gurudwaratime.data.Constants.LOCATION_JSON_LAT;
 import static com.example.android.gurudwaratime.data.Constants.LOCATION_JSON_LONG;
 import static com.example.android.gurudwaratime.data.Constants.LOCATION_JSON_PROVIDER;
+import static com.example.android.gurudwaratime.data.Constants.SYNC_EXPIRY_TIME_LENGTH_IN_MILLIS;
 
 /**
  * Class to process location results.
@@ -72,6 +74,38 @@ public class LocationResultHelper {
         }
 
         return null;
+    }
+
+    /**
+     * returns last location stored after successful sync from
+     * {@link android.content.SharedPreferences}
+     *
+     * @param context application context
+     * @return returns last sync {@link android.location.Location}
+     */
+    public static long getLastSyncTimeInMillis(Context context) {
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
+        return sp.getLong(KEY_LAST_SYNC_TIME_IN_MILLIS, 0);
+    }
+
+    /**
+     * returns last location stored after successful sync from
+     * {@link android.content.SharedPreferences}
+     *
+     * @param context application context
+     * @return returns last sync {@link android.location.Location}
+     */
+    public static void clearLastSyncLocation(Context context) {
+
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(context)
+                .edit();
+        editor.remove(KEY_LAST_SYNC_LOCATION_JSON);
+        editor.remove(KEY_LAST_SYNC_TIME_IN_MILLIS);
+        editor.apply();
+
     }
 
     /**
@@ -191,7 +225,9 @@ public class LocationResultHelper {
             SharedPreferences.Editor editor = PreferenceManager
                     .getDefaultSharedPreferences(mContext)
                     .edit();
-            editor.putString(KEY_LAST_SYNC_LOCATION_JSON, locationJson).apply();
+            editor.putString(KEY_LAST_SYNC_LOCATION_JSON, locationJson);
+            editor.putLong(KEY_LAST_SYNC_TIME_IN_MILLIS, System.currentTimeMillis());
+            editor.apply();
         }
     }
 
@@ -201,8 +237,13 @@ public class LocationResultHelper {
     public boolean isFreshLocation() {
         Location lastSyncLocation = getLastSyncLocation(mContext);
         if (lastSyncLocation != null) {
-            return (mLocation.distanceTo(lastSyncLocation) >=
+            final float currDisplacement = mLocation.distanceTo(lastSyncLocation);
+            boolean isLocationFresh = (currDisplacement >=
                     LocationRequestHelper.SMALLEST_DISPLACEMENT_IN_METERS);
+            long lastSyncTimeInMillis = getLastSyncTimeInMillis(mContext);
+            boolean isTimeExpired = (System.currentTimeMillis() - lastSyncTimeInMillis)
+                    >= SYNC_EXPIRY_TIME_LENGTH_IN_MILLIS;
+            return isLocationFresh || isTimeExpired;
         }
         return true;
     }

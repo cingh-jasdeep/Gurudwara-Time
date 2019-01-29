@@ -27,8 +27,8 @@ import static com.example.android.gurudwaratime.data.Constants.KEY_LOCATION_UPDA
  */
 public class LocationRequestHelper {
 
-    private static final long UPDATE_INTERVAL_IN_MINUTES = 15;
-    private static final long SMALLEST_DISPLACEMENT_IN_KILOMETERS = 20;
+    private static final long UPDATE_INTERVAL_IN_MINUTES = 8;
+    private static final long SMALLEST_DISPLACEMENT_IN_KILOMETERS = 10;
     static final float SMALLEST_DISPLACEMENT_IN_METERS =
             SMALLEST_DISPLACEMENT_IN_KILOMETERS * 1000;
     private static final long UPDATE_INTERVAL_IN_MILLIS =

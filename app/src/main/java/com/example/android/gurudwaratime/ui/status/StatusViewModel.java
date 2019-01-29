@@ -6,39 +6,34 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.location.Location;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.example.android.gurudwaratime.data.DataRepository;
 import com.example.android.gurudwaratime.data.LiveSharedPreference;
 import com.example.android.gurudwaratime.location_updates.LocationRequestHelper;
-import com.example.android.gurudwaratime.location_updates.LocationResultHelper;
 
-import static com.example.android.gurudwaratime.data.Constants.KEY_AUTO_SILENT_STATUS;
-import static com.example.android.gurudwaratime.data.Constants.KEY_LAST_SYNC_LOCATION_JSON;
+import static com.example.android.gurudwaratime.data.Constants.SYNC_EXPIRY_TIME_LENGTH_IN_MILLIS;
 
 public class StatusViewModel extends AndroidViewModel {
 
     private static final String TAG = StatusViewModel.class.getSimpleName();
 
-
+    private final DataRepository mRepo;
     private final LiveSharedPreference<Boolean> mAutoSilentRequestedStatus;
-    private final LiveSharedPreference<String> mLastSyncLocationJson;
+    private final LiveSharedPreference<Long> mLastSyncTimeInMillis;
     private final MediatorLiveData<AutoSilentStatusStates> mAutoSilentStatus;
 
 
     public StatusViewModel(@NonNull Application application) {
         super(application);
-        SharedPreferences sp =
-                PreferenceManager.getDefaultSharedPreferences(application);
+        mRepo = DataRepository.getInstance(getApplication());
 
         mAutoSilentRequestedStatus =
-                new LiveSharedPreference<>(KEY_AUTO_SILENT_STATUS, sp);
+                mRepo.getAutoSilentRequestedStatusLive();
 
-        mLastSyncLocationJson =
-                new LiveSharedPreference<>(KEY_LAST_SYNC_LOCATION_JSON, sp);
+        mLastSyncTimeInMillis =
+                mRepo.getLastSyncTimeInMillisLive();
 
         mAutoSilentStatus = new MediatorLiveData<>();
 
@@ -61,10 +56,10 @@ public class StatusViewModel extends AndroidViewModel {
             StatusViewModel.startLocationUpdates(getApplication(), false);
             mAutoSilentStatus.setValue(AutoSilentStatusStates.INIT);
             //start observing last sync location
-            mAutoSilentStatus.addSource(mLastSyncLocationJson, new Observer<String>() {
+            mAutoSilentStatus.addSource(mLastSyncTimeInMillis, new Observer<Long>() {
                 @Override
-                public void onChanged(@Nullable String lastSyncLocationJson) {
-                    onLastSyncLocationJsonChange(lastSyncLocationJson);
+                public void onChanged(@Nullable Long aLong) {
+                    onLastSyncTimeChange(aLong);
                 }
             });
         } else {
@@ -72,19 +67,22 @@ public class StatusViewModel extends AndroidViewModel {
             //stop location updates
             StatusViewModel.stopLocationUpdates(getApplication());
             //stop observing last sync location
-            mAutoSilentStatus.removeSource(mLastSyncLocationJson);
+            mAutoSilentStatus.removeSource(mLastSyncTimeInMillis);
             //update status to turned off
             mAutoSilentStatus.setValue(AutoSilentStatusStates.TURNED_OFF);
 
         }
     }
 
-    private void onLastSyncLocationJsonChange(@Nullable String lastSyncLocationJson) {
-        if (lastSyncLocationJson != null &&
-                !lastSyncLocationJson.equals("")) {
-            //update state
-            if (mAutoSilentStatus.getValue() == AutoSilentStatusStates.INIT) {
-                mAutoSilentStatus.setValue(AutoSilentStatusStates.NO_LOCATION);
+    private void onLastSyncTimeChange(@Nullable Long lastSyncTimeInMillis) {
+        if (lastSyncTimeInMillis != null) {
+            boolean isFreshSync = (System.currentTimeMillis() - lastSyncTimeInMillis)
+                    < SYNC_EXPIRY_TIME_LENGTH_IN_MILLIS;
+            if (isFreshSync) {
+                //update state
+                if (mAutoSilentStatus.getValue() == AutoSilentStatusStates.INIT) {
+                    mAutoSilentStatus.setValue(AutoSilentStatusStates.NO_LOCATION);
+                }
             }
         }
     }
@@ -101,11 +99,7 @@ public class StatusViewModel extends AndroidViewModel {
         return AutoSilentRequestedStatusHelper.getStatus(context);
     }
 
-    public static Location getLastSyncLocation(Context context) {
-        return LocationResultHelper.getLastSyncLocation(context);
-    }
-
-    LiveData<AutoSilentStatusStates> getAutoSilentRequestedStatus() {
+    LiveData<AutoSilentStatusStates> getAutoSilentStatus() {
         return mAutoSilentStatus;
     }
 

@@ -2,7 +2,9 @@ package com.example.android.gurudwaratime.data;
 
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.util.Log;
 import com.example.android.gurudwaratime.database.AppDatabase;
 import com.example.android.gurudwaratime.database.PlaceDbEntity;
 import com.example.android.gurudwaratime.database.PlacesDbDao;
+import com.example.android.gurudwaratime.location_updates.LocationResultHelper;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.GeoApiContext;
 import com.google.maps.NearbySearchRequest;
@@ -30,6 +33,9 @@ import static com.example.android.gurudwaratime.data.Constants.DEFAULT_GEOFENCE_
 import static com.example.android.gurudwaratime.data.Constants.GEOFENCE_AREA_VIEWPORT_FACTOR;
 import static com.example.android.gurudwaratime.data.Constants.INVALID_INDEX;
 import static com.example.android.gurudwaratime.data.Constants.KEYWORD_QUERY_DEFAULT_VALUE_PLACES_API;
+import static com.example.android.gurudwaratime.data.Constants.KEY_AUTO_SILENT_STATUS;
+import static com.example.android.gurudwaratime.data.Constants.KEY_LAST_SYNC_LOCATION_JSON;
+import static com.example.android.gurudwaratime.data.Constants.KEY_LAST_SYNC_TIME_IN_MILLIS;
 import static com.example.android.gurudwaratime.data.Constants.PLACES_API_NEXT_PAGE_SLEEP_INTERVAL_MILLIS;
 import static com.example.android.gurudwaratime.data.Constants.PLACES_API_PAGE_SIZE;
 
@@ -43,9 +49,31 @@ public class DataRepository {
 
     private final PlacesDbDao mPlacesDbDao;
 
+    private final SharedPreferences mSharedPrefs;
 
-    private DataRepository(AppDatabase db) {
+    private final LiveSharedPreference<Boolean> mAutoSilentRequestedStatus;
+
+    private final LiveSharedPreference<String> mLastSyncLocationJson;
+
+    private final LiveSharedPreference<Long> mLastSyncTimeInMillis;
+
+
+    private DataRepository(Context context) {
+
+        AppDatabase db = AppDatabase.getDatabase(context);
+
         mPlacesDbDao = db.placesDao();
+
+        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        mAutoSilentRequestedStatus =
+                new LiveSharedPreference<>(KEY_AUTO_SILENT_STATUS, mSharedPrefs);
+
+        mLastSyncLocationJson =
+                new LiveSharedPreference<>(KEY_LAST_SYNC_LOCATION_JSON, mSharedPrefs);
+
+        mLastSyncTimeInMillis =
+                new LiveSharedPreference<>(KEY_LAST_SYNC_TIME_IN_MILLIS, mSharedPrefs);
 
         mGeoApiContext = new GeoApiContext.Builder()
                 .apiKey(Constants.KEY_QUERY_DEFAULT_VALUE_PLACES_API)
@@ -55,16 +83,16 @@ public class DataRepository {
     /**
      * Singleton pattern to get instance of Repository
      *
-     * @param db app database instance
+     * @param context app context
      * @return single instance of repo
      */
     public synchronized static DataRepository getInstance(
-            AppDatabase db) {
+            Context context) {
         Log.d(TAG, "Getting the repository");
         if (sInstance == null) {
             synchronized (DataRepository.class) {
                 if (sInstance == null) {
-                    sInstance = new DataRepository(db);
+                    sInstance = new DataRepository(context);
                     Log.d(TAG, "Made new repository");
                 }
             }
@@ -426,5 +454,27 @@ public class DataRepository {
 
     public GeoApiContext getGeoApiContext() {
         return mGeoApiContext;
+    }
+
+    public void clearLastSyncLocation(Context context) {
+        Log.i(TAG, "clearLastSyncLocation: clearing last sync location from shared prefs");
+        LocationResultHelper.clearLastSyncLocation(context);
+    }
+
+    public LiveSharedPreference<Boolean> getAutoSilentRequestedStatusLive() {
+        return mAutoSilentRequestedStatus;
+    }
+
+    public LiveSharedPreference<String> getLastSyncLocationJsonLive() {
+        return mLastSyncLocationJson;
+    }
+
+    public Location getLastSyncLocation(Context context) {
+        Log.i(TAG, "getLastSyncLocation: getting last sync location from shared prefs");
+        return LocationResultHelper.getLastSyncLocation(context);
+    }
+
+    public LiveSharedPreference<Long> getLastSyncTimeInMillisLive() {
+        return mLastSyncTimeInMillis;
     }
 }

@@ -2,6 +2,8 @@ package com.example.android.gurudwaratime.data;
 
 import com.example.android.gurudwaratime.BuildConfig;
 
+import java.util.concurrent.TimeUnit;
+
 public class Constants {
 
     /**
@@ -44,12 +46,14 @@ public class Constants {
     public static final int PLACES_API_NEXT_PAGE_SLEEP_INTERVAL_MILLIS = 2000;
 
     /**
-     * shared pref key for location updates request and last location json
+     * shared pref keys for location updates request, last sync location
      */
     public final static String KEY_LOCATION_UPDATES_REQUEST_STATUS =
             "location-updates-request-status";
     public final static String KEY_LAST_SYNC_LOCATION_JSON =
             "location-updates-last-sync-location-json";
+    public final static String KEY_LAST_SYNC_TIME_IN_MILLIS =
+            "location-updates-last-sync-time-in-millis";
 
     /**
      * shared pref key for auto silent status
@@ -62,6 +66,10 @@ public class Constants {
     public static final String GURUDWARA_TIME_SYNC_TAG = "gurudwara-time-sync-tag";
     public static final String EXTRA_SYNC_NEW_LOCATION_JSON = "extra-new-location-json";
     public static final String EXTRA_FORCE_SYNC_NEW_LOCATION = "extra-force-sync-new-location";
+
+    public final static long SYNC_EXPIRY_TIME_LENGTH_IN_HOURS = 24;
+    public final static long SYNC_EXPIRY_TIME_LENGTH_IN_MILLIS =
+            TimeUnit.HOURS.toMillis(SYNC_EXPIRY_TIME_LENGTH_IN_HOURS);
 
 
     //json parsing constants

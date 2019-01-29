@@ -44,7 +44,7 @@ public class StatusActivity extends PermissionsCheckActivity {
 
         connectViewModel();
 
-        mViewModel.getAutoSilentRequestedStatus().observe(this,
+        mViewModel.getAutoSilentStatus().observe(this,
                 new Observer<AutoSilentStatusStates>() {
                     @Override
                     public void onChanged(@Nullable AutoSilentStatusStates autoSilentStatusStates) {
