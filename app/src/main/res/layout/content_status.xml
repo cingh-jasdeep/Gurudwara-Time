@@ -30,13 +30,13 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
             android:layout_marginBottom="@dimen/default_margin"
-            android:text="@string/msg_at_location"
             android:textAlignment="center"
             android:textAppearance="@style/TextInstruction"
             app:layout_constraintBottom_toTopOf="@+id/text_gurudwara_info_at_location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/msg_at_location" />
 
         <TextView
             android:id="@+id/text_gurudwara_info_at_location"
@@ -45,14 +45,14 @@
             android:background="?attr/colorAccent"
             android:gravity="center"
             android:padding="@dimen/default_margin"
-            android:text="@string/sample_gurudwara_text"
             android:textAlignment="center"
             android:textAppearance="@style/TextInstruction"
             android:textColor="?android:textColorPrimaryInverse"
             app:layout_constraintBottom_toTopOf="@+id/button_never_silent_here"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_silent_mode_status" />
+            app:layout_constraintTop_toBottomOf="@+id/text_silent_mode_status"
+            tools:text="@string/sample_gurudwara_text" />
 
         <Button
             android:id="@+id/button_undo_silent"
@@ -111,7 +111,7 @@
         app:switchPadding="@dimen/default_margin" />
 
     <Button
-        android:id="@+id/button_show_nearby_status"
+        android:id="@+id/button_show_nearby"
         style="@style/BottomActionButton"
         android:onClick="onNearbyButtonClick"
         android:text="@string/action_show_nearby_gurudwaras"

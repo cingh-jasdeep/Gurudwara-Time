@@ -23,7 +23,8 @@
     <string name="msg_waheguru_ji">Waheguru ji</string>
 
     <string name="msg_no_location_detected">Phone will be put to\nsilent mode when\n
-        it is in Gurudwara for\napprox 1 minute\n\n<small>Note: Phone will not silent at\nGurudwaras in exclude list</small></string>
+        it is in Gurudwara for\napprox 1 minute\n\n<small>Note: Phone will not silent
+            at\nGurudwaras in exclude list</small></string>
 
     <string name="msg_auto_silent_off">Auto Silent setting is off\n
         Phone will <u>not</u>\nautomatically silent in\nGurudwara</string>
@@ -43,7 +44,8 @@
     <string name="action_undo_silent">Undo Silent</string>
     <string name="action_never_silent">Never Silent Here</string>
     <string name="action_overflow_menu">Menu</string>
-    <string name="sample_gurudwara_text">Sri Bangla Sahib Gurdwara\n<small>Hanuman Road Area,\nConnaught Place, New Delhi</small></string>
+    <string name="sample_gurudwara_text">Sri Bangla Sahib Gurdwara\n<small>Hanuman Road Area,
+        \nConnaught Place, New Delhi</small></string>
     <string name="title_switch_auto_silent">Auto Silent Mode</string>
     <string name="action_vibrate">Vibrate</string>
     <string name="action_setting_silent">Silent</string>
@@ -58,14 +60,19 @@
 
     <string name="msg_include_list">Include more locations\nfor auto silent</string>
     <string name="action_include_location">Include</string>
-    <string name="msg_location_permission_rationale">Location permission is needed to\ndetect device &amp; Gurudwara Location.</string>
-    <string name="msg_permission_denied_explanation">Location permission was denied, but is needed for core functionality.</string>
+    <string name="msg_location_permission_rationale">Location permission is needed to\ndetect
+        device &amp; Gurudwara Location.</string>
+    <string name="msg_permission_denied_explanation">Location permission was denied,
+        but is needed for core functionality.</string>
     <string name="action_app_settings">Settings</string>
-    <string name="msg_permissions_needed">These permissions are needed for core functionality.</string>
+    <string name="msg_permissions_needed">These permissions are needed for core functionality.
+    </string>
     <string name="msg_permissions_granted">All permissions granted.</string>
     <string name="location_notification_channel">Location Updates</string>
     <string name="unknown_location">Unknown Location</string>
     <string name="msg_synced_nearby_gurudwaras">Nearby Gurudwaras saved</string>
+    <string name="msg_location_name_placeholder">                        </string>
+    <string name="msg_location_vicinity_placeholder">               \n                </string>
 
     <plurals name="num_locations_reported">
         <item quantity="zero">No location reported</item>

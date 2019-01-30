@@ -17,7 +17,7 @@
         android:layout_marginTop="@dimen/small_margin"
         android:layout_marginBottom="@dimen/small_margin"
         android:background="@drawable/background_rect_rounded"
-        app:layout_constraintBottom_toTopOf="@+id/button_show_nearby_status"
+        app:layout_constraintBottom_toTopOf="@+id/button_show_nearby"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -32,13 +32,13 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
             android:layout_marginBottom="16dp"
-            android:text="@string/msg_at_location"
             android:textAlignment="center"
             android:textAppearance="@style/TextBody"
             app:layout_constraintBottom_toTopOf="@+id/text_gurudwara_info_at_location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/msg_at_location" />
 
         <TextView
             android:id="@+id/text_gurudwara_info_at_location"
@@ -48,14 +48,14 @@
             android:gravity="center"
             android:paddingLeft="@dimen/small_margin"
             android:paddingRight="@dimen/small_margin"
-            android:text="@string/sample_gurudwara_text"
             android:textAlignment="center"
             android:textAppearance="@style/TextBody"
             android:textColor="?android:textColorPrimaryInverse"
             app:layout_constraintBottom_toTopOf="@+id/button_never_silent_here"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_silent_mode_status" />
+            app:layout_constraintTop_toBottomOf="@+id/text_silent_mode_status"
+            tools:text="@string/sample_gurudwara_text" />
 
         <Button
             android:id="@+id/button_undo_silent"
@@ -108,8 +108,8 @@
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
-        android:text="@string/title_switch_auto_silent"
         android:onClick="onAutoSilentSwitchClick"
+        android:text="@string/title_switch_auto_silent"
         android:textAppearance="@style/TextBody"
         app:buttonTint="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -118,7 +118,7 @@
         app:switchPadding="@dimen/default_margin" />
 
     <Button
-        android:id="@+id/button_show_nearby_status"
+        android:id="@+id/button_show_nearby"
         style="@style/BottomActionButton"
         android:onClick="onNearbyButtonClick"
         android:text="@string/action_show_nearby_gurudwaras"

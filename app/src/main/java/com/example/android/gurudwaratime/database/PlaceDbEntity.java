@@ -28,12 +28,6 @@ public class PlaceDbEntity {
     @ColumnInfo(name = DataNames.COLUMN_NEARBY_INDEX)
     private int nearbyIndex;
 
-    @ColumnInfo(name = DataNames.COLUMN_CACHED_PLACE_NAME)
-    private String cachedPlaceName;
-
-    @ColumnInfo(name = DataNames.COLUMN_CACHED_PLACE_VICINITY)
-    private String cachedPlaceVicinity;
-
     @ColumnInfo(name = DataNames.COLUMN_CACHED_PLACE_LAT)
     private double cachedPlaceLat;
 
@@ -43,23 +37,19 @@ public class PlaceDbEntity {
     @ColumnInfo(name = DataNames.COLUMN_CACHED_PLACE_GEOFENCE_RADIUS)
     private float cachedPlaceGeofenceRadius;
 
-    public PlaceDbEntity(@NonNull String placeId, boolean isIncluded,
-                         boolean isExcluded, boolean isNearby, long updatedAt,
-                         int nearbyIndex, String cachedPlaceName, String cachedPlaceVicinity,
-                         double cachedPlaceLat, double cachedPlaceLong, float cachedPlaceGeofenceRadius) {
+    public PlaceDbEntity(@NonNull String placeId, boolean isIncluded, boolean isExcluded,
+                         boolean isNearby, long updatedAt, int nearbyIndex, double cachedPlaceLat,
+                         double cachedPlaceLong, float cachedPlaceGeofenceRadius) {
         this.placeId = placeId;
         this.isIncluded = isIncluded;
         this.isExcluded = isExcluded;
         this.isNearby = isNearby;
         this.updatedAt = updatedAt;
         this.nearbyIndex = nearbyIndex;
-        this.cachedPlaceName = cachedPlaceName;
-        this.cachedPlaceVicinity = cachedPlaceVicinity;
         this.cachedPlaceLat = cachedPlaceLat;
         this.cachedPlaceLong = cachedPlaceLong;
         this.cachedPlaceGeofenceRadius = cachedPlaceGeofenceRadius;
     }
-
 
     @NonNull
     public String getPlaceId() {
@@ -110,14 +100,6 @@ public class PlaceDbEntity {
         this.nearbyIndex = nearbyIndex;
     }
 
-    public String getCachedPlaceName() {
-        return cachedPlaceName;
-    }
-
-    public void setCachedPlaceName(String cachedPlaceName) {
-        this.cachedPlaceName = cachedPlaceName;
-    }
-
     public double getCachedPlaceLat() {
         return cachedPlaceLat;
     }
@@ -140,13 +122,5 @@ public class PlaceDbEntity {
 
     public void setCachedPlaceGeofenceRadius(float cachedPlaceGeofenceRadius) {
         this.cachedPlaceGeofenceRadius = cachedPlaceGeofenceRadius;
-    }
-
-    public String getCachedPlaceVicinity() {
-        return cachedPlaceVicinity;
-    }
-
-    public void setCachedPlaceVicinity(String cachedPlaceVicinity) {
-        this.cachedPlaceVicinity = cachedPlaceVicinity;
     }
 }

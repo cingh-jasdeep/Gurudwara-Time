@@ -55,6 +55,8 @@ public class StatusViewModel extends AndroidViewModel {
             //start location updates
             StatusViewModel.startLocationUpdates(getApplication(), false);
             mAutoSilentStatus.setValue(AutoSilentStatusStates.INIT);
+            //remove source if present
+            mAutoSilentStatus.removeSource(mLastSyncTimeInMillis);
             //start observing last sync location
             mAutoSilentStatus.addSource(mLastSyncTimeInMillis, new Observer<Long>() {
                 @Override

@@ -3,6 +3,7 @@ package com.example.android.gurudwaratime.ui.status;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +23,9 @@ import com.example.android.gurudwaratime.ExcludeActivity;
 import com.example.android.gurudwaratime.IncludeActivity;
 import com.example.android.gurudwaratime.PermissionsCheckActivity;
 import com.example.android.gurudwaratime.R;
-import com.example.android.gurudwaratime.ui.nearby.NearbyActivity;
+
+import static com.example.android.gurudwaratime.data.Constants.KEYWORD_QUERY_NEARBY_MAP;
+import static com.example.android.gurudwaratime.data.Constants.KEYWORD_QUERY_NEARBY_URL;
 
 public class StatusActivity extends PermissionsCheckActivity {
 
@@ -30,6 +34,8 @@ public class StatusActivity extends PermissionsCheckActivity {
     private SwitchCompat mAutoSilentSwitch;
     private TextView mSilentModeStatusText;
     private Group mAtLocationUiGroup;
+    private Intent mNearbyIntent;
+    private Button mNearbyButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,8 @@ public class StatusActivity extends PermissionsCheckActivity {
         mAutoSilentSwitch = findViewById(R.id.switch_silent_mode);
         mSilentModeStatusText = findViewById(R.id.text_silent_mode_status);
         mAtLocationUiGroup = findViewById(R.id.group_at_location_ui);
+
+        mNearbyButton = findViewById(R.id.button_show_nearby);
 
         connectViewModel();
 
@@ -54,7 +62,12 @@ public class StatusActivity extends PermissionsCheckActivity {
                         }
                     }
                 });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupNearbyButtonIntent();
     }
 
     @Override
@@ -89,6 +102,7 @@ public class StatusActivity extends PermissionsCheckActivity {
         if (actionBar != null) actionBar.setDisplayShowTitleEnabled(false);
     }
 
+
     public void onAutoSilentSwitchClick(View view) {
         if (view instanceof SwitchCompat) {
             SwitchCompat switchView = ((SwitchCompat) view);
@@ -101,6 +115,25 @@ public class StatusActivity extends PermissionsCheckActivity {
             mViewModel.updateAutoSilentRequestedStatus(requestedAutoSilentStatus);
         }
 
+    }
+
+    /**
+     * sets up google maps intent with nearby gurudwaras
+     * https://developers.google.com/maps/documentation/urls/android-intents
+     */
+    private void setupNearbyButtonIntent() {
+
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + KEYWORD_QUERY_NEARBY_MAP);
+        mNearbyIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mNearbyIntent.setPackage("com.google.android.apps.maps");
+        if (mNearbyIntent.resolveActivity(getPackageManager()) == null) {
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme("https")
+                    .authority("www.google.com")
+                    .appendPath("search")
+                    .appendQueryParameter("q", KEYWORD_QUERY_NEARBY_URL);
+            mNearbyIntent = new Intent(Intent.ACTION_VIEW, builder.build());
+        }
     }
 
     private void handleAutoSilentStatusChanged(@NonNull AutoSilentStatusStates autoSilentStatus) {
@@ -141,9 +174,14 @@ public class StatusActivity extends PermissionsCheckActivity {
         mSilentModeStatusText.setText(stringRes);
     }
 
+    /**
+     * opens google maps with nearby gurudwaras
+     * https://developers.google.com/maps/documentation/urls/android-intents
+     *
+     * @param view button view
+     */
     public void onNearbyButtonClick(View view) {
-        Intent openNearbyIntent = new Intent(this, NearbyActivity.class);
-        startActivity(openNearbyIntent);
+        startActivity(mNearbyIntent);
     }
 
     private void launchIncludeList() {

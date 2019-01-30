@@ -45,6 +45,11 @@ public class Constants {
     public static final int PLACES_API_PAGE_SIZE = 20;
     public static final int PLACES_API_NEXT_PAGE_SLEEP_INTERVAL_MILLIS = 2000;
 
+    //NEARBY MAP VIEW VALUES
+    public static final String KEYWORD_QUERY_NEARBY_MAP = "Gurudwaras";
+    public static final String KEYWORD_QUERY_NEARBY_URL = "Nearby Gurudwaras";
+
+
     /**
      * shared pref keys for location updates request, last sync location
      */
@@ -86,4 +91,9 @@ public class Constants {
     public static final double GEOFENCE_AREA_VIEWPORT_FACTOR = 0.6; // 60% of viewport area
 
     public static final int INVALID_INDEX = -1;
+
+
+    //paging constants
+    public static final int DEFAULT_PAGING_SIZE = 20;
+
 }

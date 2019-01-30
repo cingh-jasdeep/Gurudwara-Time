@@ -1,6 +1,7 @@
 package com.example.android.gurudwaratime.database;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.paging.DataSource;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
@@ -40,7 +41,7 @@ public abstract class PlacesDbDao {
     @Query("SELECT * FROM " + DataNames.TABLE_NAME_PLACES +
             " WHERE " + DataNames.COLUMN_IS_NEARBY + " = " + DataNames.TRUE +
             " ORDER BY " + DataNames.COLUMN_NEARBY_INDEX)
-    abstract LiveData<List<PlaceDbEntity>> getNearbyPlacesSorted();
+    public abstract LiveData<List<PlaceDbEntity>> getNearbyPlacesSorted();
 
     @Query("SELECT * FROM " + DataNames.TABLE_NAME_PLACES +
             " WHERE " + DataNames.COLUMN_IS_NEARBY + " = " + DataNames.TRUE +

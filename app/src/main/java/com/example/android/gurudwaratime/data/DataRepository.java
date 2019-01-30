@@ -106,8 +106,19 @@ public class DataRepository {
      * @return live data of sorted places data
      */
     LiveData<List<PlaceDbEntity>> getAllPlacesSorted() {
-        Log.d(TAG, "Actively retrieving all places livedata from the DataBase in Repository");
+        Log.d(TAG, "Actively retrieving all places livedata from the Database in Repository");
         return mPlacesDbDao.getAllPlacesSorted();
+    }
+
+    /**
+     * Returns nearby places sorted list live data
+     *
+     * @return  live data of sorted nearby places
+     */
+    public LiveData<List<PlaceDbEntity>> getNearbyPlacesSorted() {
+        Log.d(TAG, "Actively retrieving nearby places list live data " +
+                "from the Database in Repository");
+        return mPlacesDbDao.getNearbyPlacesSorted();
     }
 
     /**
@@ -117,36 +128,36 @@ public class DataRepository {
      */
     @WorkerThread
     List<PlaceDbEntity> getAllPlacesSortedSync() {
-        Log.d(TAG, "Actively retrieving all places from the DataBase in Repository");
+        Log.d(TAG, "Actively retrieving all places from the Database in Repository");
         return mPlacesDbDao.getAllPlacesSortedSync();
     }
 
 
     @WorkerThread
     public void insertAllSync(List<PlaceDbEntity> placeDbEntityList) {
-        Log.d(TAG, "Actively inserting all places from the DataBase in Repository");
+        Log.d(TAG, "Actively inserting all places from the Database in Repository");
         mPlacesDbDao.insertAll(placeDbEntityList);
     }
 
     @WorkerThread
     public void deleteAllSync() {
-        Log.d(TAG, "Actively deleting all places from the DataBase in Repository");
+        Log.d(TAG, "Actively deleting all places from the Database in Repository");
         mPlacesDbDao.deleteAll();
     }
 
     @WorkerThread
     public void replaceNearbySync(List<PlaceDbEntity> placeDbEntityList) {
-        Log.d(TAG, "Actively replacing all places from the DataBase in Repository");
+        Log.d(TAG, "Actively replacing all places from the Database in Repository");
         mPlacesDbDao.replaceNearby(placeDbEntityList);
     }
 
     private List<PlaceDbEntity> getIncludedNearbyPlacesSync() {
-        Log.d(TAG, "Actively retrieving included nearby places from the DataBase in Repository");
+        Log.d(TAG, "Actively retrieving included nearby places from the Database in Repository");
         return mPlacesDbDao.getIncludedNearbyPlacesSync();
     }
 
     private List<PlaceDbEntity> getExcludedNearbyPlacesSync() {
-        Log.d(TAG, "Actively retrieving excluded nearby places from the DataBase in Repository");
+        Log.d(TAG, "Actively retrieving excluded nearby places from the Database in Repository");
         return mPlacesDbDao.getExcludedNearbyPlacesSync();
     }
 
@@ -278,8 +289,6 @@ public class DataRepository {
                         true,
                         System.currentTimeMillis(),
                         i + pageCount * PLACES_API_PAGE_SIZE,
-                        currApiPlace.name,
-                        currApiPlace.vicinity,
                         currApiPlace.geometry.location.lat,
                         currApiPlace.geometry.location.lng,
                         geofenceRadius));
