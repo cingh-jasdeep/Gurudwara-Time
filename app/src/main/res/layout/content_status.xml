@@ -32,27 +32,52 @@
             android:layout_marginBottom="@dimen/default_margin"
             android:textAlignment="center"
             android:textAppearance="@style/TextInstruction"
-            app:layout_constraintBottom_toTopOf="@+id/text_gurudwara_info_at_location"
+            app:layout_constraintBottom_toTopOf="@+id/text_at_location_place_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/msg_at_location" />
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="@string/msg_auto_silent_init" />
 
         <TextView
-            android:id="@+id/text_gurudwara_info_at_location"
+            android:id="@+id/text_at_location_place_name"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:background="?attr/colorAccent"
             android:gravity="center"
-            android:padding="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingTop="@dimen/default_margin"
+            android:paddingEnd="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin"
             android:textAlignment="center"
             android:textAppearance="@style/TextInstruction"
             android:textColor="?android:textColorPrimaryInverse"
-            app:layout_constraintBottom_toTopOf="@+id/button_never_silent_here"
+            app:layout_constraintBottom_toTopOf="@+id/text_at_location_place_vicinity"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_silent_mode_status"
-            tools:text="@string/sample_gurudwara_text" />
+            tools:text="@string/sample_gurudwara_name" />
+
+        <TextView
+            android:id="@+id/text_at_location_place_vicinity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorAccent"
+            android:gravity="center"
+            android:paddingStart="@dimen/default_margin"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingEnd="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin"
+            android:paddingBottom="@dimen/default_margin"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextBodySmall"
+            android:textColor="?android:textColorSecondaryInverse"
+            app:layout_constraintBottom_toTopOf="@+id/button_never_silent_here"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_at_location_place_name"
+            tools:text="@string/sample_gurudwara_vicinity" />
 
         <Button
             android:id="@+id/button_undo_silent"
@@ -61,6 +86,7 @@
             android:drawableStart="@drawable/ic_action_undo_white_24dp"
             android:drawableLeft="@drawable/ic_action_undo_white_24dp"
             android:text="@string/action_undo_silent"
+            android:onClick="onUndoSilentButtonClick"
             app:backgroundTint="@android:color/black"
             app:layout_constraintBottom_toBottomOf="@id/button_never_silent_here"
             app:layout_constraintEnd_toStartOf="@+id/button_never_silent_here"
@@ -75,6 +101,7 @@
             android:drawableStart="@drawable/ic_action_exclude_white_24dp"
             android:drawableLeft="@drawable/ic_action_exclude_white_24dp"
             android:text="@string/action_never_silent"
+            android:onClick="onNeverSilentHereButtonClick"
             app:backgroundTint="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +112,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="button_undo_silent,text_gurudwara_info_at_location,button_never_silent_here" />
+            app:constraint_referenced_ids="button_undo_silent,button_never_silent_here,
+            text_at_location_place_name,text_at_location_place_vicinity" />
 
     </android.support.constraint.ConstraintLayout>
 
@@ -126,6 +154,7 @@
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_action_setting_vibrate_white_24dp"
         android:drawableLeft="@drawable/ic_action_setting_vibrate_white_24dp"
+        android:onClick="onSilentModeButtonClick"
         android:text="@string/action_vibrate"
         app:layout_constraintEnd_toStartOf="@+id/action_setting_silent"
         app:layout_constraintStart_toStartOf="parent"
@@ -138,6 +167,7 @@
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_action_setting_silent_white_24dp"
         android:drawableLeft="@drawable/ic_action_setting_silent_white_24dp"
+        android:onClick="onSilentModeButtonClick"
         android:text="@string/action_setting_silent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/action_setting_vibrate"

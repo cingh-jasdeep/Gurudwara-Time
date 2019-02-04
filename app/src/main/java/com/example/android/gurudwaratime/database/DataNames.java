@@ -33,4 +33,6 @@ public class DataNames {
     public static final String COLUMN_UPDATED_AT = "updated_at";
 
     public static final int TRUE = 1;
+
+    public static final int FALSE = 0;
 }

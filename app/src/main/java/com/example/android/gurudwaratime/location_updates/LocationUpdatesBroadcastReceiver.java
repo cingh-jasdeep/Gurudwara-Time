@@ -7,8 +7,8 @@ import android.location.Location;
 import android.util.Log;
 
 import com.example.android.gurudwaratime.BuildConfig;
+import com.example.android.gurudwaratime.background_tasks.GurudwaraTimeSyncTasks;
 import com.example.android.gurudwaratime.ui.status.StatusViewModel;
-import com.example.android.gurudwaratime.sync.GurudwaraTimeSyncTasks;
 import com.example.android.gurudwaratime.ui.welcome.PermissionsViewModel;
 import com.google.android.gms.location.LocationResult;
 
@@ -28,13 +28,13 @@ public class LocationUpdatesBroadcastReceiver extends BroadcastReceiver {
                     if (result != null) {
                         Location newLocation = result.getLastLocation();
                         if (newLocation != null) {
-                            if (GurudwaraTimeSyncTasks.scheduleNearbySyncImmediately(
+                            if (GurudwaraTimeSyncTasks.scheduleOnDemandNearbySync(
                                     context,
                                     newLocation)) {
                                 Log.i(TAG, "onReceive: scheduled nearby sync successfully \n" +
                                         newLocation);
                             } else {
-                                Log.i(TAG, "onReceive: could not schedule nearby sync!");
+                                Log.e(TAG, "onReceive: could not schedule nearby sync!");
                             }
                         }
                     }

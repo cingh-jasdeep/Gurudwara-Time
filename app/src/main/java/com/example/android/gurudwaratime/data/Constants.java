@@ -63,18 +63,45 @@ public class Constants {
     /**
      * shared pref key for auto silent status
      */
-    public final static String KEY_AUTO_SILENT_STATUS = "auto-silent-status";
+    public final static String KEY_AUTO_SILENT_REQUESTED_STATUS = "auto-silent-requested-status";
 
+    /**
+     * shared pref key for auto silent mode
+     */
+    public final static String KEY_AUTO_SILENT_REQUESTED_MODE = "auto-silent-requested-mode";
+
+    /**
+     * shared pref keys for current geofence
+     */
+    public final static String KEY_CURRENT_GEOFENCE_PLACE_ID = "current-geofence-place-id";
+    public final static String KEY_CURRENT_GEOFENCE_RESTORE_RINGER_MODE =
+            "current-geofence-restore-ringer-mode";
+    public final static String KEY_CURRENT_GEOFENCE_PLACE_NAME = "current-geofence-place-name";
+    public final static String KEY_CURRENT_GEOFENCE_PLACE_VICINITY =
+            "current-geofence-place-vicinity";
+
+    public final static int INVALID_RINGER_MODE = -1;
 
     // sync constants
 
-    public static final String GURUDWARA_TIME_SYNC_TAG = "gurudwara-time-sync-tag";
+    public static final String ON_DEMAND_NEARBY_SYNC_TAG = "on-demand-nearby-sync-tag";
+    public static final String NEARBY_SYNC_REFRESH_TAG = "nearby-sync-refresh-tag";
+
     public static final String EXTRA_SYNC_NEW_LOCATION_JSON = "extra-new-location-json";
     public static final String EXTRA_FORCE_SYNC_NEW_LOCATION = "extra-force-sync-new-location";
 
-    public final static long SYNC_EXPIRY_TIME_LENGTH_IN_HOURS = 24;
-    public final static long SYNC_EXPIRY_TIME_LENGTH_IN_MILLIS =
-            TimeUnit.HOURS.toMillis(SYNC_EXPIRY_TIME_LENGTH_IN_HOURS);
+    public final static int NEARBY_SYNC_EXPIRY_TIME_LENGTH_IN_HOURS = 24;
+
+    public final static long NEARBY_SYNC_EXPIRY_TIME_LENGTH_IN_MILLIS =
+            TimeUnit.HOURS.toMillis(NEARBY_SYNC_EXPIRY_TIME_LENGTH_IN_HOURS);
+
+    public final static int NEARBY_SYNC_EXPIRY_TIME_LENGTH_IN_SECONDS =
+            (int) TimeUnit.HOURS.toSeconds(NEARBY_SYNC_EXPIRY_TIME_LENGTH_IN_HOURS);
+
+    public final static int NEARBY_SYNC_FLEX_TIME_LENGTH_IN_SECONDS =
+            NEARBY_SYNC_EXPIRY_TIME_LENGTH_IN_SECONDS / 8;
+
+    public static final int NEARBY_SYNC_NOTIFICATION_ID = 463;
 
 
     //json parsing constants
@@ -90,10 +117,56 @@ public class Constants {
     public static final float DEFAULT_GEOFENCE_RADIUS = 50; // 50 meters
     public static final double GEOFENCE_AREA_VIEWPORT_FACTOR = 0.6; // 60% of viewport area
 
+    public final static long GEOFENCE_DEFAULT_EXPIRY_TIME_LENGTH_IN_HOURS = 24;
+    public final static long GEOFENCE_DEFAULT_EXPIRY_TIME_LENGTH_IN_MILLIS =
+            TimeUnit.HOURS.toMillis(GEOFENCE_DEFAULT_EXPIRY_TIME_LENGTH_IN_HOURS);
+
+    public final static int GEOFENCE_DEFAULT_LOITERING_TIME_LENGTH_IN_SECONDS = 50;
+    public final static int GEOFENCE_DEFAULT_LOITERING_TIME_LENGTH_IN_MILLIS =
+            (int) TimeUnit.SECONDS.toMillis(GEOFENCE_DEFAULT_LOITERING_TIME_LENGTH_IN_SECONDS);
+
+    public static final int GEOFENCING_NOTIFICATION_ID = 203;
+    public static final int GEOFENCING_NOTIFICATION_ACTION_UNDO_SILENT_ID = 204;
+    public static final int GEOFENCING_NOTIFICATION_ACTION_NEVER_SILENT_ID = 205;
+
+    //geofence handling
+    public static final String ON_DEMAND_CURRENT_GEOFENCE_HANDLE_TAG = "geofence-handle-tag";
+    //geofence syncing
+    public static final String REFRESH_GEOFENCE_SETUP_TAG = "refresh-geofence-setup-tag";
+
+    public static final int GEOFENCE_SYNC_START_TIME_LENGTH_IN_HOURS = 23;
+    public static final int GEOFENCE_SYNC_START_TIME_LENGTH_IN_SECONDS =
+            (int) TimeUnit.HOURS.toSeconds(GEOFENCE_SYNC_START_TIME_LENGTH_IN_HOURS);
+
+    public static final int GEOFENCE_SYNC_FLEX_TIME_LENGTH_IN_SECONDS = 60;
+
+
+    public static final String EXTRA_HANDLE_GEOFENCE_EVENT_TRANSITION =
+            "extra-handle-geofence-event-transition";
+
+    public static final String EXTRA_HANDLE_GEOFENCE_EVENT_REQUEST_ID =
+            "extra-handle-geofence-event-request-id";
+
+    public static final int INVALID_GEOFENCE_TRANSITION =
+            -1;
+
+
     public static final int INVALID_INDEX = -1;
 
 
     //paging constants
     public static final int DEFAULT_PAGING_SIZE = 20;
+
+
+    //Notification Constants
+    public final static String LOCATION_SYNC_CHANNEL = "location";
+    public final static String GEOFENCE_TRIGGER_CHANNEL = "geofence";
+
+    //at location tasks constants
+    public final static String ACTION_UNDO_SILENT_AT_LOCATION = BuildConfig.APPLICATION_ID +
+            "ACTION_UNDO_SILENT_AT_LOCATION";
+
+    public final static String ACTION_NEVER_SILENT_AT_LOCATION = BuildConfig.APPLICATION_ID +
+            "ACTION_NEVER_SILENT_AT_LOCATION";
 
 }

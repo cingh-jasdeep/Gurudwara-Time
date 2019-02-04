@@ -24,7 +24,7 @@
 
     <string name="msg_no_location_detected">Phone will be put to\nsilent mode when\n
         it is in Gurudwara for\napprox 1 minute\n\n<small>Note: Phone will not silent
-            at\nGurudwaras in exclude list</small></string>
+            \nat Gurudwaras in exclude list \n or if your phone is already silent</small></string>
 
     <string name="msg_auto_silent_off">Auto Silent setting is off\n
         Phone will <u>not</u>\nautomatically silent in\nGurudwara</string>
@@ -68,11 +68,18 @@
     <string name="msg_permissions_needed">These permissions are needed for core functionality.
     </string>
     <string name="msg_permissions_granted">All permissions granted.</string>
-    <string name="location_notification_channel">Location Updates</string>
+    <string name="location_notification_channel">Nearby Sync Updates</string>
+    <string name="geofence_notification_channel">Ringer mode change notifications</string>
     <string name="unknown_location">Unknown Location</string>
     <string name="msg_synced_nearby_gurudwaras">Nearby Gurudwaras saved</string>
     <string name="msg_location_name_placeholder">                        </string>
     <string name="msg_location_vicinity_placeholder">               \n                </string>
+    <string name="msg_silent_mode_activated">Silent mode activated</string>
+    <string name="msg_back_to_normal">Back to normal</string>
+    <string name="msg_touch_to_launch">Touch to launch app</string>
+    <string name="msg_place_name_default_at_location">this location</string>
+    <string name="msg_place_vicinity_default_at_location" />
+
 
     <plurals name="num_locations_reported">
         <item quantity="zero">No location reported</item>

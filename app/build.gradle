@@ -10,6 +10,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -17,7 +18,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildTypes.each{
+    buildTypes.each {
         it.buildConfigField 'String', 'GOOGLE_PLACES_API_KEY', GurudwaraTime_GooglePlacesApiKey
     }
 }
@@ -39,7 +40,8 @@ dependencies {
     def play_services_version = "16.0.0"
 
     implementation "com.google.android.gms:play-services-location:$play_services_version"
-    implementation "com.google.android.gms:play-services-places:$play_services_version"
+
+    implementation 'com.google.android.libraries.places:places-compat:1.0.0'
 
     implementation 'com.google.maps.android:android-maps-utils:0.5'
 
@@ -48,10 +50,12 @@ dependencies {
     implementation 'com.google.maps:google-maps-services:0.9.1'
     implementation 'org.slf4j:slf4j-simple:1.7.25'
 
-    def retrofit_version = "2.5.0"
+    implementation 'com.android.support:multidex:1.0.3'
 
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+//    def retrofit_version = "2.5.0"
+//
+//    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+//    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     def room_version = "1.1.1"
 

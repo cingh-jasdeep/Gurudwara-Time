@@ -12,14 +12,20 @@ import android.util.Log;
 import com.example.android.gurudwaratime.database.AppDatabase;
 import com.example.android.gurudwaratime.database.PlaceDbEntity;
 import com.example.android.gurudwaratime.database.PlacesDbDao;
+import com.example.android.gurudwaratime.geofencing.GeofencingRequestHelper;
 import com.example.android.gurudwaratime.location_updates.LocationResultHelper;
+import com.example.android.gurudwaratime.ui.status.StatusViewModel;
+import com.example.android.gurudwaratime.ui.welcome.PermissionsViewModel;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.Tasks;
 import com.google.maps.GeoApiContext;
 import com.google.maps.NearbySearchRequest;
+import com.google.maps.PlaceDetailsRequest;
 import com.google.maps.PlacesApi;
 import com.google.maps.android.SphericalUtil;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.Bounds;
+import com.google.maps.model.PlaceDetails;
 import com.google.maps.model.PlaceType;
 import com.google.maps.model.PlacesSearchResponse;
 import com.google.maps.model.PlacesSearchResult;
@@ -28,14 +34,16 @@ import com.google.maps.model.RankBy;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static com.example.android.gurudwaratime.data.Constants.DEFAULT_GEOFENCE_RADIUS;
 import static com.example.android.gurudwaratime.data.Constants.GEOFENCE_AREA_VIEWPORT_FACTOR;
 import static com.example.android.gurudwaratime.data.Constants.INVALID_INDEX;
 import static com.example.android.gurudwaratime.data.Constants.KEYWORD_QUERY_DEFAULT_VALUE_PLACES_API;
-import static com.example.android.gurudwaratime.data.Constants.KEY_AUTO_SILENT_STATUS;
+import static com.example.android.gurudwaratime.data.Constants.KEY_AUTO_SILENT_REQUESTED_MODE;
+import static com.example.android.gurudwaratime.data.Constants.KEY_AUTO_SILENT_REQUESTED_STATUS;
+import static com.example.android.gurudwaratime.data.Constants.KEY_CURRENT_GEOFENCE_PLACE_ID;
 import static com.example.android.gurudwaratime.data.Constants.KEY_LAST_SYNC_LOCATION_JSON;
-import static com.example.android.gurudwaratime.data.Constants.KEY_LAST_SYNC_TIME_IN_MILLIS;
 import static com.example.android.gurudwaratime.data.Constants.PLACES_API_NEXT_PAGE_SLEEP_INTERVAL_MILLIS;
 import static com.example.android.gurudwaratime.data.Constants.PLACES_API_PAGE_SIZE;
 
@@ -55,10 +63,15 @@ public class DataRepository {
 
     private final LiveSharedPreference<String> mLastSyncLocationJson;
 
-    private final LiveSharedPreference<Long> mLastSyncTimeInMillis;
+    private final LiveSharedPreference<Integer> mAutoSilentRequestedMode;
+
+    private final LiveSharedPreference<String> mCurrGeofencePlaceId;
+
+//    private final LiveSharedPreference<Long> mLastSyncTimeInMillis;
 
 
     private DataRepository(Context context) {
+
 
         AppDatabase db = AppDatabase.getDatabase(context);
 
@@ -67,13 +80,19 @@ public class DataRepository {
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         mAutoSilentRequestedStatus =
-                new LiveSharedPreference<>(KEY_AUTO_SILENT_STATUS, mSharedPrefs);
+                new LiveSharedPreference<>(KEY_AUTO_SILENT_REQUESTED_STATUS, mSharedPrefs);
 
         mLastSyncLocationJson =
                 new LiveSharedPreference<>(KEY_LAST_SYNC_LOCATION_JSON, mSharedPrefs);
 
-        mLastSyncTimeInMillis =
-                new LiveSharedPreference<>(KEY_LAST_SYNC_TIME_IN_MILLIS, mSharedPrefs);
+        mAutoSilentRequestedMode =
+                new LiveSharedPreference<>(KEY_AUTO_SILENT_REQUESTED_MODE, mSharedPrefs);
+
+        mCurrGeofencePlaceId =
+                new LiveSharedPreference<>(KEY_CURRENT_GEOFENCE_PLACE_ID, mSharedPrefs);
+
+//        mLastSyncTimeInMillis =
+//                new LiveSharedPreference<>(KEY_LAST_SYNC_TIME_IN_MILLIS, mSharedPrefs);
 
         mGeoApiContext = new GeoApiContext.Builder()
                 .apiKey(Constants.KEY_QUERY_DEFAULT_VALUE_PLACES_API)
@@ -100,6 +119,7 @@ public class DataRepository {
         return sInstance;
     }
 
+
     /**
      * Returns all places sorted.
      *
@@ -113,7 +133,7 @@ public class DataRepository {
     /**
      * Returns nearby places sorted list live data
      *
-     * @return  live data of sorted nearby places
+     * @return live data of sorted nearby places
      */
     public LiveData<List<PlaceDbEntity>> getNearbyPlacesSorted() {
         Log.d(TAG, "Actively retrieving nearby places list live data " +
@@ -151,23 +171,63 @@ public class DataRepository {
         mPlacesDbDao.replaceNearby(placeDbEntityList);
     }
 
+    @WorkerThread
     private List<PlaceDbEntity> getIncludedNearbyPlacesSync() {
-        Log.d(TAG, "Actively retrieving included nearby places from the Database in Repository");
+        Log.d(TAG, "Actively retrieving included nearby places " +
+                "from the Database in Repository");
         return mPlacesDbDao.getIncludedNearbyPlacesSync();
     }
 
+    @WorkerThread
+    public List<PlaceDbEntity> getIncludedOrNearbyPlacesSync() {
+        Log.d(TAG, "Actively retrieving included or " +
+                "nearby places from the Database in Repository");
+        return mPlacesDbDao.getIncludedOrNearbyPlacesSync();
+    }
+
+    @WorkerThread
     private List<PlaceDbEntity> getExcludedNearbyPlacesSync() {
-        Log.d(TAG, "Actively retrieving excluded nearby places from the Database in Repository");
+        Log.d(TAG, "Actively retrieving excluded nearby places " +
+                "from the Database in Repository");
         return mPlacesDbDao.getExcludedNearbyPlacesSync();
+    }
+
+
+    public PlaceDetails fetchPlaceById(String requestedPlaceId) {
+        if (requestedPlaceId != null && !requestedPlaceId.equals("")) {
+            PlaceDetailsRequest request =
+                    PlacesApi.placeDetails(getGeoApiContext(), requestedPlaceId);
+            try {
+                return request.fields(PlaceDetailsRequest.FieldMask.NAME,
+                        PlaceDetailsRequest.FieldMask.VICINITY).await();
+
+            } catch (ApiException e) {
+                Log.e(TAG, "fetchPlaceById: ", e);
+                return null;
+            } catch (InterruptedException e) {
+                Log.e(TAG, "fetchPlaceById: ", e);
+                return null;
+            } catch (IOException e) {
+                Log.e(TAG, "fetchPlaceById: ", e);
+                return null;
+            }
+        }
+        return null;
+    }
+
+    public PlaceDetailsRequest fetchPlaceByIdAsync(@NonNull String requestedPlaceId) {
+        PlaceDetailsRequest request =
+                PlacesApi.placeDetails(getGeoApiContext(), requestedPlaceId);
+        return request.fields(PlaceDetailsRequest.FieldMask.NAME,
+                PlaceDetailsRequest.FieldMask.VICINITY);
     }
 
     /**
      * @param location {@link android.location.Location} to perform nearby sync
-     * @param context  {@link android.content.Context} to perform sync on
      * @return string of next page token if available otherwise null
      */
     @WorkerThread
-    public boolean fetchAndSaveNearbyGurudwarasSync(@NonNull Location location, Context context) {
+    public boolean fetchAndSaveNearbyGurudwarasSync(@NonNull Location location) {
         Log.i(TAG, "fetchAndSaveNearbyGurudwarasSync: fetching nearby Gurudwaras " +
                 "using places api in the repository");
 
@@ -259,9 +319,6 @@ public class DataRepository {
 
         parseApiPlaces(searchResponse.results, parsedPlaces, pageCount);
         adjustIncludeExcludePlaces(parsedPlaces, firstResponse);
-
-        Log.i(TAG, "fetchAndSaveNearbyGurudwarasSync: Save response \n"
-                + parsedPlaces);
 
         if (firstResponse) {
             replaceNearbySync(parsedPlaces);
@@ -471,11 +528,23 @@ public class DataRepository {
     }
 
     public LiveSharedPreference<Boolean> getAutoSilentRequestedStatusLive() {
+        Log.i(TAG, "getAutoSilentRequestedStatusLive");
         return mAutoSilentRequestedStatus;
     }
 
     public LiveSharedPreference<String> getLastSyncLocationJsonLive() {
+        Log.i(TAG, "getLastSyncLocationJsonLive");
         return mLastSyncLocationJson;
+    }
+
+    public LiveSharedPreference<Integer> getAutoSilentRequestedModeLive() {
+        Log.i(TAG, "getAutoSilentRequestedModeLive");
+        return mAutoSilentRequestedMode;
+    }
+
+    public LiveSharedPreference<String> getCurrGeofencePlaceIdLive() {
+        Log.i(TAG, "getCurrGeofencePlaceIdLive");
+        return mCurrGeofencePlaceId;
     }
 
     public Location getLastSyncLocation(Context context) {
@@ -483,7 +552,49 @@ public class DataRepository {
         return LocationResultHelper.getLastSyncLocation(context);
     }
 
-    public LiveSharedPreference<Long> getLastSyncTimeInMillisLive() {
-        return mLastSyncTimeInMillis;
+    @WorkerThread
+    public void setupGeofences(Context context) {
+        //setup geofences if still permissions are still valid and
+        //auto silent is on
+        Log.i(TAG, "setupGeofences: setting up geofences");
+        if (PermissionsViewModel.checkLocationAndDndPermissions(context)
+                && StatusViewModel.getAutoSilentRequestedStatus(context)) {
+            GeofencingRequestHelper geofencingRequestHelper =
+                    new GeofencingRequestHelper(context);
+            List<PlaceDbEntity> geofencePlacesToSetup = getIncludedOrNearbyPlacesSync();
+            Log.i(TAG, "setupGeofences: " + geofencePlacesToSetup.size() +
+                    " geofences");
+            geofencingRequestHelper.updateGeofencesList(geofencePlacesToSetup);
+            try {
+                Tasks.await(geofencingRequestHelper.unRegisterAllGeofences());
+                Tasks.await(geofencingRequestHelper.registerAllGeofences());//NEEDS REFRESH
+            } catch (ExecutionException e) {
+                Log.e(TAG, "setupGeofences: ", e);
+            } catch (InterruptedException e) {
+                Log.e(TAG, "setupGeofences: ", e);
+            }
+        }
     }
+
+    public void removeGeofences(Context context) {
+        //remove geofences
+        Log.i(TAG, "removeGeofences: removing geofences");
+        GeofencingRequestHelper geofencingRequestHelper =
+                new GeofencingRequestHelper(context);
+        if (PermissionsViewModel.checkLocationAndDndPermissions(context)) {
+            geofencingRequestHelper.unRegisterAllGeofences();
+        }
+
+    }
+
+    @WorkerThread
+    public void markPlaceAsExcludedSync(@NonNull String placeId) {
+        Log.i(TAG, "markPlaceAsExcludedSync: placeId: " + placeId);
+        mPlacesDbDao.markPlaceAsExcluded(placeId);
+    }
+
+
+//    public LiveSharedPreference<Long> getLastSyncTimeInMillisLive() {
+//        return mLastSyncTimeInMillis;
+//    }
 }

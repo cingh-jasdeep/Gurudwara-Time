@@ -1,12 +1,10 @@
 package com.example.android.gurudwaratime;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
-import com.example.android.gurudwaratime.data.Constants;
 import com.facebook.stetho.Stetho;
-import com.google.maps.GeoApiContext;
 
-public class MainApplication extends Application {
+public class MainApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {

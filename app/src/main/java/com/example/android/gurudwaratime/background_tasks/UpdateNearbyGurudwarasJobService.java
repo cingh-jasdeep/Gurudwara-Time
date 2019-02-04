@@ -1,4 +1,4 @@
-package com.example.android.gurudwaratime.sync;
+package com.example.android.gurudwaratime.background_tasks;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +26,7 @@ public class UpdateNearbyGurudwarasJobService extends SimpleJobService {
                 boolean forceSync = jobExtras.getBoolean(
                         EXTRA_FORCE_SYNC_NEW_LOCATION,
                         false);
-
+                Log.i(TAG, "onRunJob: starting nearby sync");
                 //synchronous task to sync nearby places with db
                 boolean syncResult =
                         GurudwaraTimeSyncTasks.performNearbySync(getApplicationContext(),
@@ -46,6 +46,6 @@ public class UpdateNearbyGurudwarasJobService extends SimpleJobService {
             Log.i(TAG, "onRunJob: no job extras");
         }
 
-        return JobService.RESULT_SUCCESS;
+        return JobService.RESULT_FAIL_NORETRY;
     }
 }

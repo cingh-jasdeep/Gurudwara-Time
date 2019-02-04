@@ -12,7 +12,7 @@
 
     <application
         android:name=".MainApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:enabled="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="AllowBackup,GoogleAppIndexingWarning"
+        tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
         <activity
             android:name=".ui.welcome.WelcomeActivity"
@@ -36,15 +36,6 @@
         <activity
             android:name=".ui.status.StatusActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.nearby.NearbyActivity"
-            android:parentActivityName=".ui.status.StatusActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:targetApi="jelly_bean">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.status.StatusActivity" />
-        </activity>
 
         <receiver android:name=".widget.StatusWidgetProvider">
             <intent-filter>
@@ -63,6 +54,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".geofencing.GeofenceBroadcastReceiver" />
 
         <activity
             android:name=".ExcludeActivity"
@@ -86,12 +78,28 @@
         </activity>
 
         <service
-            android:name=".sync.UpdateNearbyGurudwarasJobService"
+            android:name=".background_tasks.UpdateNearbyGurudwarasJobService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
+
+        <service
+            android:name=".background_tasks.HandleGeofenceEventJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".background_tasks.RefreshGeofencesSetupJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+        <service android:name=".background_tasks.HandleAtLocationTasksIntentService" />
     </application>
 
 </manifest>

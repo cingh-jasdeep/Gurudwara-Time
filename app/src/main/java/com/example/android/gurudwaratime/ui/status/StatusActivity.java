@@ -3,11 +3,15 @@ package com.example.android.gurudwaratime.ui.status;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.Group;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
@@ -32,10 +36,11 @@ public class StatusActivity extends PermissionsCheckActivity {
     private static final String TAG = StatusActivity.class.getSimpleName();
     private StatusViewModel mViewModel;
     private SwitchCompat mAutoSilentSwitch;
-    private TextView mSilentModeStatusText;
+    private TextView mSilentModeStatusText, mAtLocationNameText, mAtLocationVicinityText;
     private Group mAtLocationUiGroup;
     private Intent mNearbyIntent;
-    private Button mNearbyButton;
+    private Button mAutoSilentSilentSettingButton, mAutoSilentVibrateSettingButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,19 +51,33 @@ public class StatusActivity extends PermissionsCheckActivity {
 
         mAutoSilentSwitch = findViewById(R.id.switch_silent_mode);
         mSilentModeStatusText = findViewById(R.id.text_silent_mode_status);
+        mAtLocationNameText = findViewById(R.id.text_at_location_place_name);
+        mAtLocationVicinityText = findViewById(R.id.text_at_location_place_vicinity);
         mAtLocationUiGroup = findViewById(R.id.group_at_location_ui);
 
-        mNearbyButton = findViewById(R.id.button_show_nearby);
+        mAutoSilentSilentSettingButton = findViewById(R.id.action_setting_silent);
+        mAutoSilentVibrateSettingButton = findViewById(R.id.action_setting_vibrate);
 
-        connectViewModel();
-
-        mViewModel.getAutoSilentStatus().observe(this,
-                new Observer<AutoSilentStatusStates>() {
+        getViewModel().getAutoSilentStatus().observe(this,
+                new Observer<StatusViewModel.AutoSilentStatusStates>() {
                     @Override
-                    public void onChanged(@Nullable AutoSilentStatusStates autoSilentStatusStates) {
+                    public void onChanged(@Nullable StatusViewModel.AutoSilentStatusStates
+                                                  autoSilentStatusStates) {
                         if (autoSilentStatusStates != null) {
                             Log.i(TAG, "onChanged: " + autoSilentStatusStates);
                             handleAutoSilentStatusChanged(autoSilentStatusStates);
+                        }
+                    }
+                });
+
+        getViewModel().getAutoSilentMode().observe(this,
+                new Observer<StatusViewModel.AutoSilentModeStates>() {
+                    @Override
+                    public void onChanged(@Nullable StatusViewModel.AutoSilentModeStates
+                                                  autoSilentModeStates) {
+                        if (autoSilentModeStates != null) {
+                            Log.i(TAG, "onChanged: auto silent mode " + autoSilentModeStates);
+                            handleAutoSilentModeChanged(autoSilentModeStates);
                         }
                     }
                 });
@@ -90,6 +109,11 @@ public class StatusActivity extends PermissionsCheckActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private StatusViewModel getViewModel() {
+        if (mViewModel == null) connectViewModel();
+        return mViewModel;
+    }
+
     private void connectViewModel() {
         mViewModel = ViewModelProviders.of(this).get(StatusViewModel.class);
     }
@@ -111,10 +135,21 @@ public class StatusActivity extends PermissionsCheckActivity {
             //reset checkbox
             switchView.setChecked(!switchView.isChecked());
 
-            if (mViewModel == null) connectViewModel();
-            mViewModel.updateAutoSilentRequestedStatus(requestedAutoSilentStatus);
+            getViewModel().updateAutoSilentRequestedStatus(requestedAutoSilentStatus);
         }
 
+    }
+
+    public void onSilentModeButtonClick(View view) {
+        switch (view.getId()) {
+            case R.id.action_setting_vibrate:
+                getViewModel().updateAutoSilentRequestedMode(AudioManager.RINGER_MODE_VIBRATE);
+
+                break;
+            case R.id.action_setting_silent:
+                getViewModel().updateAutoSilentRequestedMode(AudioManager.RINGER_MODE_SILENT);
+                break;
+        }
     }
 
     /**
@@ -136,7 +171,8 @@ public class StatusActivity extends PermissionsCheckActivity {
         }
     }
 
-    private void handleAutoSilentStatusChanged(@NonNull AutoSilentStatusStates autoSilentStatus) {
+    private void handleAutoSilentStatusChanged(@NonNull StatusViewModel.AutoSilentStatusStates
+                                                       autoSilentStatus) {
         int stringRes;
 
         switch (autoSilentStatus) {
@@ -152,10 +188,12 @@ public class StatusActivity extends PermissionsCheckActivity {
 
                 break;
             case AT_LOCATION:
-                mAtLocationUiGroup.setVisibility(View.VISIBLE);
                 mSilentModeStatusText.setText(R.string.msg_at_location);
-                //todo get current location data
+                //get current location data from viewmodel
+                mAtLocationNameText.setText(getViewModel().getAtLocationPlaceName());
+                mAtLocationVicinityText.setText(getViewModel().getAtLocationPlaceVicinity());
 
+                mAtLocationUiGroup.setVisibility(View.VISIBLE);
                 break;
             case TURNED_OFF:
                 mAutoSilentSwitch.setChecked(false);
@@ -166,16 +204,48 @@ public class StatusActivity extends PermissionsCheckActivity {
         }
     }
 
-    private void updateStatusText(Boolean autoSilentStatus) {
-        int stringRes = R.string.msg_auto_silent_off;
-        if (autoSilentStatus) {
-            stringRes = R.string.msg_auto_silent_init;
+    private void handleAutoSilentModeChanged(@NonNull StatusViewModel.AutoSilentModeStates
+                                                     autoSilentModeStates) {
+
+        switch (autoSilentModeStates) {
+
+            case DISABLED:
+                mAutoSilentSilentSettingButton.setEnabled(false);
+                setButtonTint(mAutoSilentSilentSettingButton, android.R.color.darker_gray);
+
+                mAutoSilentVibrateSettingButton.setEnabled(false);
+                setButtonTint(mAutoSilentVibrateSettingButton, android.R.color.darker_gray);
+                break;
+
+            case SILENT:
+                mAutoSilentSilentSettingButton.setEnabled(false);
+                setButtonTint(mAutoSilentSilentSettingButton, R.color.colorAccent);
+
+                mAutoSilentVibrateSettingButton.setEnabled(true);
+                setButtonTint(mAutoSilentVibrateSettingButton, android.R.color.darker_gray);
+                break;
+
+            case VIBRATE:
+                mAutoSilentSilentSettingButton.setEnabled(true);
+                setButtonTint(mAutoSilentSilentSettingButton, android.R.color.darker_gray);
+
+                mAutoSilentVibrateSettingButton.setEnabled(false);
+                setButtonTint(mAutoSilentVibrateSettingButton, R.color.colorAccent);
+                break;
         }
-        mSilentModeStatusText.setText(stringRes);
+
+    }
+
+    private void setButtonTint(Button button, int colorResId) {
+        int colorInt = ContextCompat.getColor(this, colorResId);
+        button.setTextColor(colorInt);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            button.setCompoundDrawableTintList(ColorStateList.valueOf(colorInt));
+        }
     }
 
     /**
-     * opens google maps with nearby gurudwaras
+     * opens google maps or google search with nearby gurudwaras
      * https://developers.google.com/maps/documentation/urls/android-intents
      *
      * @param view button view
@@ -197,5 +267,13 @@ public class StatusActivity extends PermissionsCheckActivity {
 
     private void displayToast(int string_res_id) {
         Toast.makeText(this, string_res_id, Toast.LENGTH_SHORT).show();
+    }
+
+    public void onUndoSilentButtonClick(View view) {
+        getViewModel().onUndoSilentRequest();
+    }
+
+    public void onNeverSilentHereButtonClick(View view) {
+        getViewModel().onNeverSilentHereRequest();
     }
 }

@@ -26,7 +26,9 @@ import static com.example.android.gurudwaratime.data.Constants.KEY_LAST_SYNC_TIM
 import static com.example.android.gurudwaratime.data.Constants.LOCATION_JSON_LAT;
 import static com.example.android.gurudwaratime.data.Constants.LOCATION_JSON_LONG;
 import static com.example.android.gurudwaratime.data.Constants.LOCATION_JSON_PROVIDER;
-import static com.example.android.gurudwaratime.data.Constants.SYNC_EXPIRY_TIME_LENGTH_IN_MILLIS;
+import static com.example.android.gurudwaratime.data.Constants.LOCATION_SYNC_CHANNEL;
+import static com.example.android.gurudwaratime.data.Constants.NEARBY_SYNC_EXPIRY_TIME_LENGTH_IN_MILLIS;
+import static com.example.android.gurudwaratime.data.Constants.NEARBY_SYNC_NOTIFICATION_ID;
 
 /**
  * Class to process location results.
@@ -34,8 +36,6 @@ import static com.example.android.gurudwaratime.data.Constants.SYNC_EXPIRY_TIME_
 public class LocationResultHelper {
 
     private static final String TAG = LocationResultHelper.class.getSimpleName();
-
-    final private static String PRIMARY_CHANNEL = "location";
 
 
     private Context mContext;
@@ -47,10 +47,10 @@ public class LocationResultHelper {
         mLocation = toLocation(locationJsonString);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(PRIMARY_CHANNEL,
+            NotificationChannel channel = new NotificationChannel(LOCATION_SYNC_CHANNEL,
                     context.getString(R.string.location_notification_channel),
                     NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setLightColor(Color.GREEN);
+            channel.setLightColor(Color.GRAY);
             getNotificationManager().createNotificationChannel(channel);
         }
 
@@ -91,11 +91,10 @@ public class LocationResultHelper {
     }
 
     /**
-     * returns last location stored after successful sync from
+     * clear last location stored after successful sync from
      * {@link android.content.SharedPreferences}
      *
      * @param context application context
-     * @return returns last sync {@link android.location.Location}
      */
     public static void clearLastSyncLocation(Context context) {
 
@@ -202,26 +201,28 @@ public class LocationResultHelper {
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(mContext, PRIMARY_CHANNEL)
+                new NotificationCompat.Builder(mContext, LOCATION_SYNC_CHANNEL)
                         .setContentTitle(mContext.getString(R.string.msg_synced_nearby_gurudwaras))
                         .setContentText((getLocationResultText() == null) ?
                                 mContext.getString(R.string.unknown_location)
                                 : getLocationResultText())
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setAutoCancel(true)
-                        .setContentIntent(notificationPendingIntent);
+                        .setContentIntent(notificationPendingIntent)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setDefaults(NotificationCompat.DEFAULT_ALL);
 
-        getNotificationManager().notify(0, notificationBuilder.build());
+        getNotificationManager().notify(NEARBY_SYNC_NOTIFICATION_ID, notificationBuilder.build());
     }
 
     /**
      * saves last location after successful sync to {@link android.content.SharedPreferences}
      */
     public void saveSyncLocation() {
-
         String locationJson = toJsonString(mLocation);
         //check valid location data
         if (locationJson != null && !locationJson.equals("")) {
+            Log.i(TAG, "saveSyncLocation: " + locationJson);
             SharedPreferences.Editor editor = PreferenceManager
                     .getDefaultSharedPreferences(mContext)
                     .edit();
@@ -242,7 +243,7 @@ public class LocationResultHelper {
                     LocationRequestHelper.SMALLEST_DISPLACEMENT_IN_METERS);
             long lastSyncTimeInMillis = getLastSyncTimeInMillis(mContext);
             boolean isTimeExpired = (System.currentTimeMillis() - lastSyncTimeInMillis)
-                    >= SYNC_EXPIRY_TIME_LENGTH_IN_MILLIS;
+                    >= NEARBY_SYNC_EXPIRY_TIME_LENGTH_IN_MILLIS;
             return isLocationFresh || isTimeExpired;
         }
         return true;
