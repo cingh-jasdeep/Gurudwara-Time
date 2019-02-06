@@ -100,6 +100,10 @@ public class StatusViewModel extends AndroidViewModel {
                     onAutoSilentRequestedModeChange(sharedPrefValue);
                 }
             });
+
+            //update status widget init
+            GurudwaraTimeSyncTasks.scheduleOnDemandStatusWidgetUpdate(
+                    getApplication().getApplicationContext());
         } else {
             // auto silent off setup
             //stop location updates
@@ -123,6 +127,9 @@ public class StatusViewModel extends AndroidViewModel {
 
             //update status to turned off
             mAutoSilentStatus.setValue(AutoSilentStatusStates.TURNED_OFF);
+            //update status widget turned _ off
+            GurudwaraTimeSyncTasks.scheduleOnDemandStatusWidgetUpdate(
+                    getApplication().getApplicationContext());
 
         }
     }
@@ -283,6 +290,10 @@ public class StatusViewModel extends AndroidViewModel {
             HandleAtLocationTasksIntentService.startActionNeverSilentAtLocation(getApplication()
                     .getApplicationContext());
         }
+    }
+
+    public void resetExcludedPlaces() {
+        mRepo.resetExcludedPlacesAsync(getApplication().getApplicationContext());
     }
 
     public enum AutoSilentStatusStates {

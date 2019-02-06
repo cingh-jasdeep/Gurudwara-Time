@@ -121,7 +121,7 @@ public class Constants {
     public final static long GEOFENCE_DEFAULT_EXPIRY_TIME_LENGTH_IN_MILLIS =
             TimeUnit.HOURS.toMillis(GEOFENCE_DEFAULT_EXPIRY_TIME_LENGTH_IN_HOURS);
 
-    public final static int GEOFENCE_DEFAULT_LOITERING_TIME_LENGTH_IN_SECONDS = 50;
+    public final static int GEOFENCE_DEFAULT_LOITERING_TIME_LENGTH_IN_SECONDS = 25;
     public final static int GEOFENCE_DEFAULT_LOITERING_TIME_LENGTH_IN_MILLIS =
             (int) TimeUnit.SECONDS.toMillis(GEOFENCE_DEFAULT_LOITERING_TIME_LENGTH_IN_SECONDS);
 
@@ -168,5 +168,27 @@ public class Constants {
 
     public final static String ACTION_NEVER_SILENT_AT_LOCATION = BuildConfig.APPLICATION_ID +
             "ACTION_NEVER_SILENT_AT_LOCATION";
+
+    //widget constants
+    public static final String UPDATE_STATUS_WIDGET_TAG = "update-status-widget-tag";
+
+    //include exclude constants
+    public static final int MAX_INCLUDE_EXCLUDE_PLACES_LIST_SIZE = 20;
+
+    //google maps link constants
+    public static final String GOOGLE_MAPS_LINK_BASE_URL =
+            "https://www.google.com/maps/search/?api=1";
+    public static final String GOOGLE_MAPS_LINK_SCHEME = "https";
+    public static final String GOOGLE_MAPS_LINK_AUTHORITY = "www.google.com";
+    public static final String GOOGLE_MAPS_LINK_PATH_1_MAPS = "maps";
+    public static final String GOOGLE_MAPS_LINK_PATH_2_SEARCH = "search/";
+    public static final String GOOGLE_MAPS_LINK_QUERY_1_KEY_API = "api";
+    public static final String GOOGLE_MAPS_LINK_QUERY_1_DEFAULT_VALUE = "1";
+    public static final String GOOGLE_MAPS_LINK_QUERY_2_KEY_QUERY = "query";
+    public static final String GOOGLE_MAPS_LINK_QUERY_3_KEY_QUERY_PLACE_ID = "query_place_id";
+
+    //db tasks constants
+    public final static String ACTION_RESET_EXCLUDED_PLACES = BuildConfig.APPLICATION_ID +
+            "ACTION_UNDO_SILENT_AT_LOCATION";
 
 }

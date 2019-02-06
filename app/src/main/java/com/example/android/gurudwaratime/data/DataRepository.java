@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 
+import com.example.android.gurudwaratime.background_tasks.HandleDbTasksIntentService;
 import com.example.android.gurudwaratime.database.AppDatabase;
 import com.example.android.gurudwaratime.database.PlaceDbEntity;
 import com.example.android.gurudwaratime.database.PlacesDbDao;
@@ -172,17 +173,10 @@ public class DataRepository {
     }
 
     @WorkerThread
-    private List<PlaceDbEntity> getIncludedNearbyPlacesSync() {
-        Log.d(TAG, "Actively retrieving included nearby places " +
-                "from the Database in Repository");
-        return mPlacesDbDao.getIncludedNearbyPlacesSync();
-    }
-
-    @WorkerThread
-    public List<PlaceDbEntity> getIncludedOrNearbyPlacesSync() {
+    public List<PlaceDbEntity> getNearbyPlacesExclusivelySync() {
         Log.d(TAG, "Actively retrieving included or " +
                 "nearby places from the Database in Repository");
-        return mPlacesDbDao.getIncludedOrNearbyPlacesSync();
+        return mPlacesDbDao.getNearbyPlacesExclusivelySync();
     }
 
     @WorkerThread
@@ -190,6 +184,16 @@ public class DataRepository {
         Log.d(TAG, "Actively retrieving excluded nearby places " +
                 "from the Database in Repository");
         return mPlacesDbDao.getExcludedNearbyPlacesSync();
+    }
+
+    private void deleteExcludedPlacesExclusive() {
+        Log.i(TAG, "deleteExcludedPlacesExclusively");
+        mPlacesDbDao.deleteExcludedPlacesExclusively();
+    }
+
+    private void resetExcludedFlagForAllPlaces() {
+        Log.i(TAG, "resetExcludedFlagForAllPlaces");
+        mPlacesDbDao.resetExcludedFlagForAllPlaces();
     }
 
 
@@ -342,7 +346,6 @@ public class DataRepository {
                 parsedPlaces.add(new PlaceDbEntity(
                         currApiPlace.placeId,
                         false,
-                        false,
                         true,
                         System.currentTimeMillis(),
                         i + pageCount * PLACES_API_PAGE_SIZE,
@@ -420,29 +423,11 @@ public class DataRepository {
                     }
                 }
 
-                List<PlaceDbEntity> allIncludedNearbyPlaces = getIncludedNearbyPlacesSync();
-                if (allIncludedNearbyPlaces != null && allIncludedNearbyPlaces.size() > 0) {
-                    for (PlaceDbEntity includedNearbyPlace :
-                            allIncludedNearbyPlaces) {
-
-                        int searchIndex = getCurrentIndex(includedNearbyPlace, parsedNearbyPlaces);
-                        //if db place is in new nearby places
-                        if (searchIndex != INVALID_INDEX) {
-                            parsedNearbyPlaces.get(searchIndex)
-                                    .setIncluded(true);
-                        } else {
-                            includedNearbyPlace.setNearby(false);
-                            parsedNearbyPlaces.add(includedNearbyPlace);
-                        }
-                    }
-                }
-
 
             } else {
 
                 //if nearby list is empty retain all other places
                 List<PlaceDbEntity> allExcludedNearbyPlaces = getExcludedNearbyPlacesSync();
-                List<PlaceDbEntity> allIncludedNearbyPlaces = getIncludedNearbyPlacesSync();
 
                 if (allExcludedNearbyPlaces != null && allExcludedNearbyPlaces.size() > 0) {
                     for (PlaceDbEntity excludedNearbyPlace :
@@ -450,14 +435,6 @@ public class DataRepository {
                         excludedNearbyPlace.setNearby(false);
                     }
                     parsedNearbyPlaces.addAll(allExcludedNearbyPlaces);
-                }
-
-                if (allIncludedNearbyPlaces != null && allIncludedNearbyPlaces.size() > 0) {
-                    for (PlaceDbEntity includedNearbyPlace :
-                            allIncludedNearbyPlaces) {
-                        includedNearbyPlace.setNearby(false);
-                    }
-                    parsedNearbyPlaces.addAll(allIncludedNearbyPlaces);
                 }
 
             }
@@ -480,20 +457,6 @@ public class DataRepository {
                         if (searchIndex != INVALID_INDEX) {
                             parsedNearbyPlaces.get(searchIndex)
                                     .setExcluded(true);
-                        }
-                    }
-                }
-
-                List<PlaceDbEntity> allIncludedNearbyPlaces = getIncludedNearbyPlacesSync();
-                if (allIncludedNearbyPlaces != null && allIncludedNearbyPlaces.size() > 0) {
-                    for (PlaceDbEntity includedNearbyPlace :
-                            allIncludedNearbyPlaces) {
-
-                        int searchIndex = getCurrentIndex(includedNearbyPlace, parsedNearbyPlaces);
-                        //if db place is in new nearby places
-                        if (searchIndex != INVALID_INDEX) {
-                            parsedNearbyPlaces.get(searchIndex)
-                                    .setIncluded(true);
                         }
                     }
                 }
@@ -561,7 +524,7 @@ public class DataRepository {
                 && StatusViewModel.getAutoSilentRequestedStatus(context)) {
             GeofencingRequestHelper geofencingRequestHelper =
                     new GeofencingRequestHelper(context);
-            List<PlaceDbEntity> geofencePlacesToSetup = getIncludedOrNearbyPlacesSync();
+            List<PlaceDbEntity> geofencePlacesToSetup = getNearbyPlacesExclusivelySync();
             Log.i(TAG, "setupGeofences: " + geofencePlacesToSetup.size() +
                     " geofences");
             geofencingRequestHelper.updateGeofencesList(geofencePlacesToSetup);
@@ -587,10 +550,29 @@ public class DataRepository {
 
     }
 
+    /**
+     * must be a maximum of 20 places excluded
+     *
+     * @param placeId placeid to exclude
+     */
     @WorkerThread
     public void markPlaceAsExcludedSync(@NonNull String placeId) {
         Log.i(TAG, "markPlaceAsExcludedSync: placeId: " + placeId);
         mPlacesDbDao.markPlaceAsExcluded(placeId);
+    }
+
+    /**
+     * resets all excluded places
+     */
+    public void resetExcludedPlacesAsync(Context context) {
+        Log.i(TAG, "resetExcludedPlacesAsync");
+        HandleDbTasksIntentService.startActionResetExcludedPlaces(context);
+    }
+
+    @WorkerThread
+    public void resetExcludedPlacesSync() {
+        deleteExcludedPlacesExclusive();
+        resetExcludedFlagForAllPlaces();
     }
 
 

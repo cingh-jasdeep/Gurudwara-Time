@@ -1,5 +1,7 @@
 package com.example.android.gurudwaratime.background_tasks;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.location.Location;
 import android.media.AudioManager;
@@ -13,6 +15,7 @@ import com.example.android.gurudwaratime.data.DataRepository;
 import com.example.android.gurudwaratime.geofencing.GeofencingResultHelper;
 import com.example.android.gurudwaratime.location_updates.LocationResultHelper;
 import com.example.android.gurudwaratime.ui.status.StatusViewModel;
+import com.example.android.gurudwaratime.widget.StatusWidgetProvider;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -37,6 +40,7 @@ import static com.example.android.gurudwaratime.data.Constants.NEARBY_SYNC_REFRE
 import static com.example.android.gurudwaratime.data.Constants.ON_DEMAND_CURRENT_GEOFENCE_HANDLE_TAG;
 import static com.example.android.gurudwaratime.data.Constants.ON_DEMAND_NEARBY_SYNC_TAG;
 import static com.example.android.gurudwaratime.data.Constants.REFRESH_GEOFENCE_SETUP_TAG;
+import static com.example.android.gurudwaratime.data.Constants.UPDATE_STATUS_WIDGET_TAG;
 
 public class GurudwaraTimeSyncTasks {
 
@@ -128,6 +132,8 @@ public class GurudwaraTimeSyncTasks {
 
                 // Save the location results.
                 locationResultHelper.saveSyncLocation();
+                //update status widget : no _ location
+                GurudwaraTimeSyncTasks.scheduleOnDemandStatusWidgetUpdate(context);
 
                 // Show notification results
 //                locationResultHelper.showNotification();
@@ -138,6 +144,8 @@ public class GurudwaraTimeSyncTasks {
 
                 Log.i(TAG, "performNearbySync: scheduling refresh places job");
                 scheduleNearbySyncRefresh(context, syncedLocation);
+
+
             } else {
                 return false;
             }
@@ -236,12 +244,14 @@ public class GurudwaraTimeSyncTasks {
                 //save current geofence place id and ringer
                 resultHelper.saveCurrentGeofencePlaceId(requestId);
                 resultHelper.saveCurrentGeofenceRestoreRingerMode(currentRingerMode);
-
+                //update status widget at _ location
+                GurudwaraTimeSyncTasks.scheduleOnDemandStatusWidgetUpdate(context);
 
                 switch (requestedSilentMode) {
                     case AudioManager.RINGER_MODE_SILENT:
                         resultHelper.setCurrentRingerMode(requestedSilentMode);
                         resultHelper.sendNotification(requestedSilentMode, currPlaceName, true);
+
                         break;
 
                     case AudioManager.RINGER_MODE_VIBRATE:
@@ -281,6 +291,9 @@ public class GurudwaraTimeSyncTasks {
                 resultHelper.sendNotification(currGeofenceRestoreRingerMode, null,
                         false);
                 resultHelper.clearCurrentGeofenceData();
+                //update status widget no _ location
+                GurudwaraTimeSyncTasks.scheduleOnDemandStatusWidgetUpdate(context);
+
                 break;
             default:
                 // Log the error.
@@ -382,6 +395,95 @@ public class GurudwaraTimeSyncTasks {
         resultHelper.setCurrentRingerMode(restoreRingerMode);
         resultHelper.clearNotification();
         resultHelper.clearCurrentGeofenceData();
+        //update status widget no _ location
+        GurudwaraTimeSyncTasks.scheduleOnDemandStatusWidgetUpdate(context);
+
     }
 
+    public static boolean scheduleOnDemandStatusWidgetUpdate(Context context) {
+
+        Log.i(TAG, "scheduleOnDemandStatusWidgetUpdate");
+        GooglePlayDriver driver = new GooglePlayDriver(context);
+        FirebaseJobDispatcher jobDispatcher = new FirebaseJobDispatcher(driver);
+
+        Job syncJob = jobDispatcher.newJobBuilder()
+                .setService(UpdateStatusWidgetJobService.class)
+                .setTag(UPDATE_STATUS_WIDGET_TAG)
+                .setLifetime(Lifetime.FOREVER)
+                .setTrigger(Trigger.NOW)
+                .setReplaceCurrent(true)
+                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
+                .build();
+
+        return (jobDispatcher.schedule(syncJob) == FirebaseJobDispatcher.SCHEDULE_RESULT_SUCCESS);
+    }
+
+    /**
+     * background helper method to update status widgets
+     *
+     * @param context context to work on
+     */
+    @WorkerThread
+    public static void updateStatusWidgets(Context context) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int[] appWidgetIds = appWidgetManager
+                .getAppWidgetIds(new ComponentName(context, StatusWidgetProvider.class));
+
+        boolean autoSilentRequestedStatus = StatusViewModel.getAutoSilentRequestedStatus(context);
+        Location lastSyncLocation = LocationResultHelper.getLastSyncLocation(context);
+
+        StatusViewModel.AutoSilentStatusStates silentStatus;
+
+        String currentGeofenceLocationPlaceId;
+        String currentLocationName = null;
+        String currentLocationVicinity = null;
+
+        if (autoSilentRequestedStatus) {
+            //auto silent is requested to be on
+
+            if (lastSyncLocation != null) {
+                //we have a successful nearby sync
+                //check if inside a geofence
+                GeofencingResultHelper geofencingResultHelper =
+                        new GeofencingResultHelper(context);
+
+                currentGeofenceLocationPlaceId =
+                        geofencingResultHelper.getCurrentGeofencePlaceId();
+
+                if (!TextUtils.isEmpty(currentGeofenceLocationPlaceId)) {
+                    //currently inside a geofence
+                    silentStatus = StatusViewModel.AutoSilentStatusStates.AT_LOCATION;
+
+                    currentLocationName =
+                            geofencingResultHelper.getCurrentGeofencePlaceName();
+                    currentLocationVicinity =
+                            geofencingResultHelper.getCurrentGeofencePlaceVicinity();
+
+                } else {
+                    //not inside a geofence
+                    silentStatus = StatusViewModel.AutoSilentStatusStates.NO_LOCATION;
+                }
+
+            } else {
+                //we are waiting for sync results to appear
+                silentStatus = StatusViewModel.AutoSilentStatusStates.INIT;
+            }
+
+
+        } else {
+            //auto silent is requested to be off
+            silentStatus = StatusViewModel.AutoSilentStatusStates.TURNED_OFF;
+        }
+
+        StatusWidgetProvider.updateStatusWidgets(context, appWidgetManager, appWidgetIds,
+                silentStatus, currentLocationName, currentLocationVicinity);
+
+    }
+
+    @WorkerThread
+    public static void handleResetExcludedPlaces(Context applicationContext) {
+        DataRepository repo = DataRepository.getInstance(applicationContext);
+        repo.resetExcludedPlacesSync();
+        repo.setupGeofences(applicationContext);
+    }
 }

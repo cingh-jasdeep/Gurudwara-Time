@@ -23,11 +23,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.gurudwaratime.ExcludeActivity;
-import com.example.android.gurudwaratime.IncludeActivity;
 import com.example.android.gurudwaratime.PermissionsCheckActivity;
 import com.example.android.gurudwaratime.R;
 
+import static com.example.android.gurudwaratime.data.Constants.GOOGLE_MAPS_LINK_BASE_URL;
+import static com.example.android.gurudwaratime.data.Constants.GOOGLE_MAPS_LINK_QUERY_2_KEY_QUERY;
 import static com.example.android.gurudwaratime.data.Constants.KEYWORD_QUERY_NEARBY_MAP;
 import static com.example.android.gurudwaratime.data.Constants.KEYWORD_QUERY_NEARBY_URL;
 
@@ -98,11 +98,8 @@ public class StatusActivity extends PermissionsCheckActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_open_include_list:
-                launchIncludeList();
-                break;
-            case R.id.action_open_exclude_list:
-                launchExcludeList();
+            case R.id.action_reset_excluded_places:
+                resetExcludedPlaces();
                 break;
         }
 
@@ -162,12 +159,11 @@ public class StatusActivity extends PermissionsCheckActivity {
         mNearbyIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mNearbyIntent.setPackage("com.google.android.apps.maps");
         if (mNearbyIntent.resolveActivity(getPackageManager()) == null) {
-            Uri.Builder builder = new Uri.Builder();
-            builder.scheme("https")
-                    .authority("www.google.com")
-                    .appendPath("search")
-                    .appendQueryParameter("q", KEYWORD_QUERY_NEARBY_URL);
-            mNearbyIntent = new Intent(Intent.ACTION_VIEW, builder.build());
+            Uri mapsUri = Uri.parse(GOOGLE_MAPS_LINK_BASE_URL);
+            mapsUri = mapsUri.buildUpon()
+                    .appendQueryParameter(GOOGLE_MAPS_LINK_QUERY_2_KEY_QUERY,
+                            KEYWORD_QUERY_NEARBY_URL).build();
+            mNearbyIntent = new Intent(Intent.ACTION_VIEW, mapsUri);
         }
     }
 
@@ -254,14 +250,9 @@ public class StatusActivity extends PermissionsCheckActivity {
         startActivity(mNearbyIntent);
     }
 
-    private void launchIncludeList() {
-        Intent intent = new Intent(this, IncludeActivity.class);
-        startActivity(intent);
-    }
-
-    private void launchExcludeList() {
-        Intent intent = new Intent(this, ExcludeActivity.class);
-        startActivity(intent);
+    private void resetExcludedPlaces() {
+        //reset excluded places
+        getViewModel().resetExcludedPlaces();
     }
 
 

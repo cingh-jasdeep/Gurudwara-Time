@@ -13,9 +13,6 @@ public class PlaceDbEntity {
     @ColumnInfo(name = DataNames.COLUMN_PLACE_ID)
     private String placeId;
 
-    @ColumnInfo(name = DataNames.COLUMN_IS_INCLUDED)
-    private boolean isIncluded;
-
     @ColumnInfo(name = DataNames.COLUMN_IS_EXCLUDED)
     private boolean isExcluded;
 
@@ -37,11 +34,10 @@ public class PlaceDbEntity {
     @ColumnInfo(name = DataNames.COLUMN_CACHED_PLACE_GEOFENCE_RADIUS)
     private float cachedPlaceGeofenceRadius;
 
-    public PlaceDbEntity(@NonNull String placeId, boolean isIncluded, boolean isExcluded,
+    public PlaceDbEntity(@NonNull String placeId, boolean isExcluded,
                          boolean isNearby, long updatedAt, int nearbyIndex, double cachedPlaceLat,
                          double cachedPlaceLong, float cachedPlaceGeofenceRadius) {
         this.placeId = placeId;
-        this.isIncluded = isIncluded;
         this.isExcluded = isExcluded;
         this.isNearby = isNearby;
         this.updatedAt = updatedAt;
@@ -58,14 +54,6 @@ public class PlaceDbEntity {
 
     public void setPlaceId(@NonNull String placeId) {
         this.placeId = placeId;
-    }
-
-    public boolean isIncluded() {
-        return isIncluded;
-    }
-
-    public void setIncluded(boolean included) {
-        isIncluded = included;
     }
 
     public boolean isExcluded() {

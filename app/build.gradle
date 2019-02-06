@@ -20,6 +20,7 @@ android {
     }
     buildTypes.each {
         it.buildConfigField 'String', 'GOOGLE_PLACES_API_KEY', GurudwaraTime_GooglePlacesApiKey
+        it.resValue 'string', "GOOGLE_PLACES_API_KEY", GurudwaraTime_GooglePlacesApiKey
     }
 }
 

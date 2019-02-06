@@ -43,15 +43,9 @@ public abstract class PlacesDbDao {
     public abstract LiveData<List<PlaceDbEntity>> getNearbyPlacesSorted();
 
     @Query("SELECT * FROM " + DataNames.TABLE_NAME_PLACES +
-            " WHERE (" + DataNames.COLUMN_IS_NEARBY + " = " + DataNames.TRUE +
-            " OR " + DataNames.COLUMN_IS_INCLUDED + " = " + DataNames.TRUE +
-            " ) AND " + DataNames.COLUMN_IS_EXCLUDED + " = " + DataNames.FALSE)
-    public abstract List<PlaceDbEntity> getIncludedOrNearbyPlacesSync();
-
-    @Query("SELECT * FROM " + DataNames.TABLE_NAME_PLACES +
             " WHERE " + DataNames.COLUMN_IS_NEARBY + " = " + DataNames.TRUE +
-            " AND " + DataNames.COLUMN_IS_INCLUDED + " = " + DataNames.TRUE)
-    public abstract List<PlaceDbEntity> getIncludedNearbyPlacesSync();
+            " AND " + DataNames.COLUMN_IS_EXCLUDED + " = " + DataNames.FALSE)
+    public abstract List<PlaceDbEntity> getNearbyPlacesExclusivelySync();
 
     @Query("SELECT * FROM " + DataNames.TABLE_NAME_PLACES +
             " WHERE " + DataNames.COLUMN_IS_NEARBY + " = " + DataNames.TRUE +
@@ -62,4 +56,13 @@ public abstract class PlacesDbDao {
             DataNames.COLUMN_IS_EXCLUDED + " = " + DataNames.TRUE +
             " WHERE " + DataNames.COLUMN_PLACE_ID + " = :placeId")
     public abstract void markPlaceAsExcluded(String placeId);
+
+    @Query("DELETE FROM " + DataNames.TABLE_NAME_PLACES +
+            " WHERE " + DataNames.COLUMN_IS_EXCLUDED + " = " + DataNames.TRUE +
+            " AND " + DataNames.COLUMN_IS_NEARBY + " = " + DataNames.FALSE)
+    public abstract void deleteExcludedPlacesExclusively();
+
+    @Query("UPDATE " + DataNames.TABLE_NAME_PLACES + " SET " +
+            DataNames.COLUMN_IS_EXCLUDED + " = " + DataNames.FALSE)
+    public abstract void resetExcludedFlagForAllPlaces();
 }

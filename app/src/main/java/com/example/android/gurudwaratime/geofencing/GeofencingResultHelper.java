@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Build;
@@ -109,7 +110,7 @@ public class GeofencingResultHelper {
 
             case AudioManager.RINGER_MODE_SILENT:
                 builder.setLargeIcon(
-                        getBitmapFromVectorDrawable(
+                        getDarkBitmapFromVectorDrawable(
                                 mContext,
                                 R.drawable.ic_action_setting_silent_white_24dp));
                 setNotificationText(placeName, isEnter, builder);
@@ -118,7 +119,7 @@ public class GeofencingResultHelper {
 
             case AudioManager.RINGER_MODE_VIBRATE:
                 builder.setLargeIcon(
-                        getBitmapFromVectorDrawable(
+                        getDarkBitmapFromVectorDrawable(
                                 mContext,
                                 R.drawable.ic_action_setting_vibrate_white_24dp));
                 setNotificationText(placeName, isEnter, builder);
@@ -127,7 +128,7 @@ public class GeofencingResultHelper {
 
             case AudioManager.RINGER_MODE_NORMAL:
                 builder.setLargeIcon(
-                        getBitmapFromVectorDrawable(
+                        getDarkBitmapFromVectorDrawable(
                                 mContext,
                                 R.drawable.ic_action_setting_normal_white_24dp));
                 setNotificationText(placeName, isEnter, builder);
@@ -328,7 +329,7 @@ public class GeofencingResultHelper {
      * @param drawableId drawable id
      * @return bitmap
      */
-    public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
+    public static Bitmap getDarkBitmapFromVectorDrawable(Context context, int drawableId) {
         Drawable drawable = ContextCompat.getDrawable(context, drawableId);
         if (drawable != null) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -339,6 +340,8 @@ public class GeofencingResultHelper {
                     drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.setColorFilter(ContextCompat.getColor(context, R.color.colorAccent),
+                    PorterDuff.Mode.DST);
             drawable.draw(canvas);
             return bitmap;
         }

@@ -17,8 +17,6 @@
     <string name="action_welcome_button_text_give_dnd_access">
         2.\tGive DND Access</string>
 
-    <string name="action_include_list">Include More Places</string>
-    <string name="action_exclude_list">Exclude List</string>
     <string name="action_show_nearby_gurudwaras">Show Nearby Gurudwaras</string>
     <string name="msg_waheguru_ji">Waheguru ji</string>
 
@@ -35,33 +33,15 @@
 
     <string name="sample_gurudwara_name">Sri Bangla Sahib Gurdwara</string>
     <string name="sample_gurudwara_vicinity">Hanuman Road Area,\nConnaught Place, New Delhi</string>
-    <string name="sample_gurudwara_city">New Delhi</string>
-
-    <string name="sample_location_name">Purvanchal Heights</string>
-    <string name="sample_location_vicinity">Greater Noida</string>
-    <string name="sample_location_city">Greater Noida</string>
 
     <string name="action_undo_silent">Undo Silent</string>
     <string name="action_never_silent">Never Silent Here</string>
     <string name="action_overflow_menu">Menu</string>
-    <string name="sample_gurudwara_text">Sri Bangla Sahib Gurdwara\n<small>Hanuman Road Area,
-        \nConnaught Place, New Delhi</small></string>
     <string name="title_switch_auto_silent">Auto Silent Mode</string>
     <string name="action_vibrate">Vibrate</string>
     <string name="action_setting_silent">Silent</string>
-    <string name="msg_nearby_list">Nearby Gurudwara List</string>
-    <string name="a11y_navigate_location_item">Navigate</string>
-    <string name="title_auto_silent_off">Auto Silent Off</string>
     <string name="msg_you_are_at">You are at</string>
-    <string name="msg_exclude_list">Exclude Gurudwara locations\nfrom auto silent</string>
-    <string name="action_exclude_location">Exclude</string>
-    <string name="action_clear_list">Clear List</string>
-    <string name="action_refresh">Refresh</string>
 
-    <string name="msg_include_list">Include more locations\nfor auto silent</string>
-    <string name="action_include_location">Include</string>
-    <string name="msg_location_permission_rationale">Location permission is needed to\ndetect
-        device &amp; Gurudwara Location.</string>
     <string name="msg_permission_denied_explanation">Location permission was denied,
         but is needed for core functionality.</string>
     <string name="action_app_settings">Settings</string>
@@ -72,18 +52,12 @@
     <string name="geofence_notification_channel">Ringer mode change notifications</string>
     <string name="unknown_location">Unknown Location</string>
     <string name="msg_synced_nearby_gurudwaras">Nearby Gurudwaras saved</string>
-    <string name="msg_location_name_placeholder">                        </string>
-    <string name="msg_location_vicinity_placeholder">               \n                </string>
     <string name="msg_silent_mode_activated">Silent mode activated</string>
     <string name="msg_back_to_normal">Back to normal</string>
     <string name="msg_touch_to_launch">Touch to launch app</string>
     <string name="msg_place_name_default_at_location">this location</string>
     <string name="msg_place_vicinity_default_at_location" />
+    <string name="action_reset_excluded_places">Reset excluded places</string>
 
 
-    <plurals name="num_locations_reported">
-        <item quantity="zero">No location reported</item>
-        <item quantity="one">One location reported</item>
-        <item quantity="other">%d locations reported</item>
-    </plurals>
 </resources>

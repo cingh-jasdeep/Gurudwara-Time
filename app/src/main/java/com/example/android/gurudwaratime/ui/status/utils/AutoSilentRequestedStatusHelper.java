@@ -22,9 +22,8 @@ public class AutoSilentRequestedStatusHelper {
     }
 
     public static boolean getStatus(Context context) {
-        //by default we start by enabling auto silent on first app launch
         return PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(KEY_AUTO_SILENT_REQUESTED_STATUS, true);
+                .getBoolean(KEY_AUTO_SILENT_REQUESTED_STATUS, false);
     }
 
     /**

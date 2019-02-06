@@ -22,6 +22,11 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/GOOGLE_PLACES_API_KEY" />
+
         <activity
             android:name=".ui.welcome.WelcomeActivity"
             android:label="@string/app_name"
@@ -56,27 +61,6 @@
         </receiver>
         <receiver android:name=".geofencing.GeofenceBroadcastReceiver" />
 
-        <activity
-            android:name=".ExcludeActivity"
-            android:parentActivityName=".ui.status.StatusActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:targetApi="jelly_bean">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.status.StatusActivity" />
-        </activity>
-        <activity
-            android:name=".IncludeActivity"
-            android:parentActivityName=".ui.status.StatusActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:targetApi="jelly_bean">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.status.StatusActivity" />
-        </activity>
-
         <service
             android:name=".background_tasks.UpdateNearbyGurudwarasJobService"
             android:exported="false">
@@ -99,7 +83,14 @@
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
+        <service android:name=".background_tasks.UpdateStatusWidgetJobService">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
         <service android:name=".background_tasks.HandleAtLocationTasksIntentService" />
+        <service android:name=".background_tasks.HandleDbTasksIntentService" />
+
     </application>
 
 </manifest>

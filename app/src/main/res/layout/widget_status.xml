@@ -1,4 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_status_widget"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
@@ -10,46 +12,38 @@
         style="@style/WidgetTextBox"
         android:layout_marginTop="@dimen/small_margin"
         android:layout_weight="1"
+        android:padding="@dimen/small_margin"
         android:text="@string/msg_waheguru_ji"
         android:textAppearance="@style/TextInstruction" />
 
     <TextView
         android:id="@+id/text_subtitle_status_widget"
-        style="@style/WidgetTextBox"
-        android:layout_weight="1"
-        android:text="@string/msg_you_are_at"
+        style="@style/WidgetStatusTextBox"
+        android:layout_weight="3"
+        android:padding="@dimen/small_margin"
         android:textAppearance="@style/TextBody"
-        android:visibility="visible" />
+        android:visibility="visible"
+        tools:text="@string/msg_you_are_at" />
 
     <TextView
         android:id="@+id/text_location_name_status_widget"
         style="@style/WidgetLocationTextBox"
-        android:layout_weight="1"
+        android:layout_weight="3"
+        android:paddingLeft="@dimen/small_margin"
         android:paddingTop="@dimen/small_margin"
-        android:text="@string/sample_gurudwara_name"
-        android:textAppearance="@style/TextInstruction" />
+        android:paddingRight="@dimen/small_margin"
+        android:textAppearance="@style/TextInstruction"
+        tools:text="@string/sample_gurudwara_name" />
 
     <TextView
-        android:id="@+id/text_location_city_status_widget"
+        android:id="@+id/text_location_vicinity_status_widget"
         style="@style/WidgetLocationTextBox"
-        android:layout_weight="1"
-        android:text="@string/sample_gurudwara_city"
-        android:textAppearance="@style/TextBody" />
-
-    <Button
-        android:id="@+id/button_toggle_auto_silent_status_widget"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:drawableEnd="@drawable/ic_unchecked_white_24dp"
-        android:drawableRight="@drawable/ic_unchecked_white_24dp"
-        android:drawablePadding="@dimen/default_margin"
-        android:text="@string/title_auto_silent_off"
-        android:textAllCaps="false"
-        android:textAppearance="@style/TextInstruction"
-        android:textColor="@android:color/white" />
+        android:layout_weight="3"
+        android:paddingLeft="@dimen/small_margin"
+        android:paddingRight="@dimen/small_margin"
+        android:paddingBottom="@dimen/small_margin"
+        android:textAppearance="@style/TextBody"
+        tools:text="@string/sample_gurudwara_vicinity" />
 
 
 </LinearLayout>
